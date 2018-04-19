@@ -19,7 +19,7 @@ public class Task {
 				+ ", Bis: " + bis;
 	}
 
-	public boolean isDone() {
+	public boolean getIsDone() {
 		return isDone;
 	}
 	
