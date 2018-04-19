@@ -15,6 +15,7 @@ public class DatabaseHelper {
 		ArrayList<Task> studentarray=new ArrayList<Task>();
 		java.util.Date datum=new java.util.Date();
 
+		
 		try {
 
 			/* Step 1 Registrieren des Treibers */
