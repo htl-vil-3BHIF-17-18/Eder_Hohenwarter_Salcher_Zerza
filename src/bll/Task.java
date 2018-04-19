@@ -2,7 +2,7 @@ package bll;
 
 import java.util.Date;
 
-public class Tasks {
+public class Task {
 	
 	private Kategorie kategorie = null;
 	private String fach="";
@@ -18,7 +18,9 @@ public class Tasks {
 		return "Kategorie: " + kategorie + ", Fach: " + fach + ", Beschreibung: " + beschreibung + ", Von:" + von
 				+ ", Bis: " + bis;
 	}
-	
 
+	public boolean isDone() {
+		return isDone;
+	}
 	
 }
