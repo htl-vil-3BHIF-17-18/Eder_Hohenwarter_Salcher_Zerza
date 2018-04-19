@@ -18,6 +18,16 @@ public class Task {
 		return "Kategorie: " + kategorie + ", Fach: " + fach + ", Beschreibung: " + beschreibung + ", Von:" + von
 				+ ", Bis: " + bis;
 	}
+	
+	public Task(Kategorie kategorie, String fach, String beschreibung, Date von, Date bis, boolean isDone) {
+		super();
+		this.kategorie = kategorie;
+		this.fach = fach;
+		this.beschreibung = beschreibung;
+		this.von = von;
+		this.bis = bis;
+		this.isDone = isDone;
+	}
 
 	public boolean getIsDone() {
 		return this.isDone;
