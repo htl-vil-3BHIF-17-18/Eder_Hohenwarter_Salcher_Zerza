@@ -1,5 +1,25 @@
 package bll;
 
+import java.util.Date;
+
 public class Tasks {
-	//mit enum 
+	
+	private Kategorie kategorie = null;
+	private String fach="";
+	private String beschreibung="";
+	private Date von =null;
+	private Date bis= null;
+	private boolean isDone=false; 
+	
+	//boolean muss für checkbox abgeprüft werden! 
+	
+	@Override
+	public String toString() {
+		return "Kategorie: " + kategorie + ", Fach: " + fach + ", Beschreibung: " + beschreibung + ", Von:" + von
+				+ ", Bis: " + bis;
+	}
+	
+	
+	
+	
 }
