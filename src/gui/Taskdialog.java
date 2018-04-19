@@ -45,28 +45,28 @@ public class Taskdialog extends JPanel{
 		lblBeschreibung = new JLabel("Beschreibung :");
 		btnAdd = new JButton("Add");
 		
-		txtISBN = new JTextField();
-		txttitle = new JTextField();
-		txtfirstname= new JTextField();
-		txtlastname = new JTextField();
-		txtpublisher = new JTextField();
-		txtprice = new JTextField();
-		
-		
-		this.add(lblISBN);
-		this.add(txtISBN);
-		this.add(lbltitle);
-		this.add(txttitle);
-		this.add(lblfirstname);
-		this.add(txtfirstname);
-		this.add(lbllastname);
-		this.add(txtlastname);
-		this.add(lblpublisher);
-		this.add(txtpublisher);
-		this.add(lblprice);
-		this.add(txtprice);
-		this.add(lblamount);
-		this.add(txtamount);
+//		txtISBN = new JTextField();
+//		txttitle = new JTextField();
+//		txtfirstname= new JTextField();
+//		txtlastname = new JTextField();
+//		txtpublisher = new JTextField();
+//		txtprice = new JTextField();
+//		
+//		
+//		this.add(lblISBN);
+//		this.add(txtISBN);
+//		this.add(lbltitle);
+//		this.add(txttitle);
+//		this.add(lblfirstname);
+//		this.add(txtfirstname);
+//		this.add(lbllastname);
+//		this.add(txtlastname);
+//		this.add(lblpublisher);
+//		this.add(txtpublisher);
+//		this.add(lblprice);
+//		this.add(txtprice);
+//		this.add(lblamount);
+//		this.add(txtamount);
 		
 		
 	}
