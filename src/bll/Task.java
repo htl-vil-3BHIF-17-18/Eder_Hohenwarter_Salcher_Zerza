@@ -32,5 +32,26 @@ public class Task {
 	public boolean getIsDone() {
 		return this.isDone;
 	}
+
+	public Kategorie getKategorie() {
+		return kategorie;
+	}
+
+	public String getFach() {
+		return fach;
+	}
+
+	public String getBeschreibung() {
+		return beschreibung;
+	}
+
+	public Date getVon() {
+		return von;
+	}
+
+	public Date getBis() {
+		return bis;
+	}
+	
 	
 }

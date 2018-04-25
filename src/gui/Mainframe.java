@@ -2,12 +2,19 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JTextField;
+
+import bll.Kategorie;
+import bll.Task;
 
 public class Mainframe extends JFrame {
 
@@ -26,11 +33,29 @@ public class Mainframe extends JFrame {
 	private Taskdialog taskdialog = null;
 	private ListPanel tasktable = null;
 	
+	private DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
+
+	
+	
 	public Mainframe(String title) {
 		super(title);
 		this.setMinimumSize(new Dimension(800,400));
 		this.setPreferredSize(new Dimension(800,400));
 		initializeControls();
+		
+		//***************
+		//ZERZA HIER EIN BEISPIEL FÜR DIE ÜBERGABE :) 
+		try {
+			Date date1=dateFormat.parse("16.5.2001");
+			Date date2=dateFormat.parse("17.5.2001");
+			this.tasktable.addTask(new Task(Kategorie.GLF,"D","schwer",date1,date2,false));
+			}catch(ParseException e)
+			{
+				e.printStackTrace();
+			}
+		//***************
+	
 		this.pack();
 		this.setVisible(true);
 	}
