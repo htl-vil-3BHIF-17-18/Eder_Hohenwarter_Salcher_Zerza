@@ -19,6 +19,9 @@ public class ListPanel extends JTable {
 	}
 	
 	public void initializeControls() {
+		
+		this.model= new DefaultTableModel();
+		this.setModel(model);
 		this.titles = new String[]{ "Kategorie", "Fach", "Beschreibung", "Von","Bis","Erledigt" };
 		this.model.setColumnIdentifiers(titles);
 	}
