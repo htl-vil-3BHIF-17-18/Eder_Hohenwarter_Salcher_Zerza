@@ -15,15 +15,16 @@ public class ListPanel extends JPanel {
 	private JTable table = null;
 	
 	public ListPanel() {
-		this.setLayout(new BorderLayout());
+		this.setLayout(new BorderLayout ());
 		initializeControls();
 		this.setVisible(true);	
 	}
 	
 	public void initializeControls() {
-		titles = new String[]{ "Kategorie", "Fach", "Beschreibung", "Von","Bis","Erledigt" };
-		model = new DefaultTableModel( titles, 0 );
-		table = new JTable( model );
+		this.titles = new String[]{ "Kategorie", "Fach", "Beschreibung", "Von","Bis","Erledigt" };
+		this.model = new DefaultTableModel( titles, 0 );
+		this.table = new JTable( model );
+		this.add(table, BorderLayout.CENTER);
 		
 	}
 }
