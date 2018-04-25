@@ -24,5 +24,6 @@ public class ListPanel extends JPanel {
 		titles = new String[]{ "Kategorie", "Fach", "Beschreibung", "Von","Bis","Erledigt" };
 		model = new DefaultTableModel( titles, 0 );
 		table = new JTable( model );
+		
 	}
 }
