@@ -35,9 +35,9 @@ public class Taskdialog extends JPanel{
 		
 	}
 	private void initializeControls() {
-		this.setLayout(new GridLayout(7,2));
-		this.setMinimumSize(new Dimension(200,300));
-		this.setPreferredSize(new Dimension(200,300));
+		this.setLayout(new GridLayout(6,2));
+		this.setMinimumSize(new Dimension(300,300));
+		this.setPreferredSize(new Dimension(300,300));
 		lblKategorie = new JLabel("Kategorie :");
 		lblVon = new JLabel("Von :");
 		lblBis= new JLabel("Bis :");
@@ -45,31 +45,23 @@ public class Taskdialog extends JPanel{
 		lblBeschreibung = new JLabel("Beschreibung :");
 		btnAdd = new JButton("Add");
 		
-//		txtISBN = new JTextField();
-//		txttitle = new JTextField();
-//		txtfirstname= new JTextField();
-//		txtlastname = new JTextField();
-//		txtpublisher = new JTextField();
-//		txtprice = new JTextField();
-//		
-//		
-//		this.add(lblISBN);
-//		this.add(txtISBN);
-//		this.add(lbltitle);
-//		this.add(txttitle);
-//		this.add(lblfirstname);
-//		this.add(txtfirstname);
-//		this.add(lbllastname);
-//		this.add(txtlastname);
-//		this.add(lblpublisher);
-//		this.add(txtpublisher);
-//		this.add(lblprice);
-//		this.add(txtprice);
-//		this.add(lblamount);
-//		this.add(txtamount);
-		
+		txtKategorie = new JTextField();
+		txtVon = new JTextField();
+		txtBis= new JTextField();
+		txtFach = new JTextField();
+		txtBeschreibung = new JTextField();
+			
+		this.add(lblKategorie);
+		this.add(txtKategorie);
+		this.add(lblVon);
+		this.add(txtVon);
+		this.add(lblBis);
+		this.add(txtBis);
+		this.add(lblFach);
+		this.add(txtFach);
+		this.add(lblBeschreibung);
+		this.add(txtBeschreibung);
+		this.add(btnAdd);
 		
 	}
-
-
 }
