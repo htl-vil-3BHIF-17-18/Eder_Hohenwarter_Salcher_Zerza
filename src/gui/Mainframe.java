@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,7 +18,7 @@ import javax.swing.JTextField;
 import bll.Kategorie;
 import bll.Task;
 
-public class Mainframe extends JFrame {
+public class Mainframe extends JFrame implements ActionListener {
 
 	/**
 	 * 
@@ -49,7 +51,7 @@ public class Mainframe extends JFrame {
 		try {
 			Date date1=dateFormat.parse("16.5.2001");
 			Date date2=dateFormat.parse("17.5.2001");
-			this.tasktable.addTask(new Task(Kategorie.GLF,"D","schwer",date1,date2,false));
+			this.tasktable.addTask(new Task(Kategorie.GLF,"D","schwer",date1,date2,true));
 			}catch(ParseException e)
 			{
 				e.printStackTrace();
@@ -74,7 +76,7 @@ public class Mainframe extends JFrame {
 		txtbis = new JTextField("");
 		txtbis.setMaximumSize(new Dimension(100,50));
 		
-		taskdialog = new Taskdialog(this,null);
+		taskdialog = new Taskdialog(this,null,this);
 		
 		menubar.add(btnRefresh);
 		menubar.add(lblvon);
@@ -85,6 +87,18 @@ public class Mainframe extends JFrame {
 		this.add(menubar,BorderLayout.PAGE_START);
 		this.add(tasktable,BorderLayout.CENTER);
 		this.add(taskdialog,BorderLayout.EAST);
+		
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("btnAdd")) {
+			try {
+				this.tasktable.addTask((this.taskdialog.getEingabeTask()));
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
 		
 	}
 }

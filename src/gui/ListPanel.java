@@ -58,5 +58,5 @@ public class ListPanel extends JPanel {
 		this.taskArray = new Object[] { t.getKategorie().toString(), t.getFach(), t.getBeschreibung(), t.getVon(), t.getBis(),
 				t.getIsDone() };
 		this.model.addRow(this.taskArray);
-	}
+		}
 }
