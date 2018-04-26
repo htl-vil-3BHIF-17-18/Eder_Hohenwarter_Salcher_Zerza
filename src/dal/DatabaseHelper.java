@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import bll.Task;
-import bll.Tasks;
+
 
 public class DatabaseHelper {
 	public static ArrayList<Task> loadData() {
@@ -29,7 +29,7 @@ public class DatabaseHelper {
 
 			while (rs.next()) {
 				/* Step 5 */
-				s = new Task(rs.getString(1), rs.getString(2), rs.getString(3), datum.parse(rs.getDate(4).toString()), rs.getDate(5), rs.getString(6));
+			//	s = new Task(rs.getString(1), rs.getString(2), rs.getString(3), datum.parse(rs.getDate(4).toString()), rs.getDate(5), rs.getString(6));
 				studentarray.add(s);
 			}
 		} catch (ClassNotFoundException e) {
@@ -66,7 +66,7 @@ public class DatabaseHelper {
 			/* Step 4 */
 			
 			for(Task s : studentarray) {
-				rs = stmt_Insert.executeQuery("INSERT INTO schueler VALUES(" + s.getKatalognummer() + ", '" + s.getVorname() +"', '" + s.getNachname() +"')");
+	//			rs = stmt_Insert.executeQuery("INSERT INTO schueler VALUES(" + s.getKatalognummer() + ", '" + s.getVorname() +"', '" + s.getNachname() +"')");
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

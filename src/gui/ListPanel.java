@@ -20,6 +20,6 @@ public class ListPanel extends JTable {
 	
 	public void initializeControls() {
 		this.titles = new String[]{ "Kategorie", "Fach", "Beschreibung", "Von","Bis","Erledigt" };
-		this.model.setColumnIdentifiers(titles);
+		this.model.setColumnIdentifiers(this.titles);
 	}
 }
