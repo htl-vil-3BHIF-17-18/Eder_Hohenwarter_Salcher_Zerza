@@ -89,6 +89,7 @@ public class Mainframe extends JFrame implements ActionListener {
 		this.add(taskdialog,BorderLayout.EAST);
 		
 	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("btnAdd")) {
