@@ -78,8 +78,11 @@ public class Taskdialog extends JPanel{
 	}
 	public Task getEingabeTask() throws ParseException {
 		//derzeit noch fix auf glf, da keine liste zur auswahl...
-		//toDO Abfragen ob was eingegeben
-		Task t=new Task(Kategorie.GLF,this.txtFach.getText(),this.txtBeschreibung.getText(),dateFormat.parse(this.txtVon.getText()),dateFormat.parse(this.txtBis.getText()),false);
+		Task t=null;
+		if(!this.txtBeschreibung.getText().trim().isEmpty() && !this.txtBis.getText().trim().isEmpty() && !this.txtFach.getText().trim().isEmpty() && !this.txtVon.getText().trim().isEmpty())
+		{
+			t=new Task(Kategorie.GLF,this.txtFach.getText(),this.txtBeschreibung.getText(),dateFormat.parse(this.txtVon.getText()),dateFormat.parse(this.txtBis.getText()),false);
+		}
 		return t;
 	}
 }
