@@ -12,7 +12,7 @@ public class DatabaseHelper {
 		Statement stmt_Select = null;
 		ResultSet rs = null;
 		Task s = null;
-		ArrayList<Task> studentarray=new ArrayList<Task>();
+		ArrayList<Task> taskarray=new ArrayList<Task>();
 		java.util.Date von=null;
 		java.util.Date bis=null;
 
@@ -66,7 +66,7 @@ public class DatabaseHelper {
 					s = new Task(kategorie, rs.getString(2), rs.getString(3), von, bis, false);
 				}
 				
-				studentarray.add(s);
+				taskarray.add(s);
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -83,7 +83,7 @@ public class DatabaseHelper {
 			}
 		}
 		
-		return studentarray;
+		return taskarray;
 	}
 
 	public static void saveData(ArrayList<Task> taskarray) {
