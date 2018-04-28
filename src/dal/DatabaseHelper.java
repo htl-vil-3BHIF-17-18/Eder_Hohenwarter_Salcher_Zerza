@@ -18,7 +18,7 @@ public class DatabaseHelper {
 
 		try {
 
-			/* Step 1 Registrieren des Treibers */////
+			/* Step 1 Registrieren des Treibers */
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			/* Step 2 */
 			con = DriverManager.getConnection("jdbc:oracle:thin:d3b06/d3b@212.152.179.117:1521:ora11g");
