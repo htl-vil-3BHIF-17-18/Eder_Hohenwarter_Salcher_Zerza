@@ -13,6 +13,8 @@ import java.util.Vector;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -26,6 +28,7 @@ public class ListPanel extends JPanel {
 	private JScrollPane scroll = null;
 	private JTable table = null;
 	private Object[] taskArray = null;
+	
 
 	public ListPanel() {
 		initializeControls();
@@ -55,12 +58,13 @@ public class ListPanel extends JPanel {
 				}
 			}
 		};
-		
+
+
 		this.table = new JTable(model) {
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
-
+			
 				if (!isRowSelected(row)) {
 					if (table.getColumnCount() >= 0) {
 						String status = getModel().getValueAt(row, 5).toString();
@@ -76,10 +80,10 @@ public class ListPanel extends JPanel {
 				} else {
 					c.setBackground(table.getBackground());
 				}
-				table.repaint();
 				return c;
 			}
 		};
+
 
 		this.scroll = new JScrollPane(this.table);
 
@@ -88,9 +92,11 @@ public class ListPanel extends JPanel {
 
 	}
 
+
 	public void addTask(Task t) {
 		this.taskArray = new Object[] { t.getKategorie().toString(), t.getFach(), t.getBeschreibung(), t.getVon(),
 				t.getBis(), t.getIsDone() };
 		this.model.addRow(this.taskArray);
 	}
+
 }
