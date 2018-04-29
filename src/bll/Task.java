@@ -19,9 +19,8 @@ public class Task {
 				+ ", Bis: " + bis;
 	}
 	
-	public Task(int id, Kategorie kategorie, String fach, String beschreibung, Date von, Date bis, boolean isDone) {
+	public Task(Kategorie kategorie, String fach, String beschreibung, Date von, Date bis, boolean isDone) {
 		super();
-		this.id=id;
 		this.kategorie = kategorie;
 		this.fach = fach;
 		this.beschreibung = beschreibung;
@@ -32,6 +31,10 @@ public class Task {
 	
 	public int getId() {
 		return this.id;
+	}
+	
+	public void setId(int id) {
+		this.id=id;
 	}
 
 	public boolean getIsDone() {
