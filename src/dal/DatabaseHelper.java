@@ -77,6 +77,7 @@ public class DatabaseHelper {
 					kat=6;
 				}
 				
+				
 				stmt_Insert.executeQuery("INSERT INTO Tasks VALUES(seqTasks.NEXTVAL," + kat + ", '" + task.getFach() +"', '" + task.getBeschreibung() + "', '" + task.getVon() + "', '" + task.getBis() + "', '" + task.getIsDone() +"')");	
 			}
 		} catch (ClassNotFoundException e) {
