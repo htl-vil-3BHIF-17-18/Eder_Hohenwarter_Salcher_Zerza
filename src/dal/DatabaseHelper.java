@@ -63,7 +63,22 @@ public class DatabaseHelper {
 			stmt_Insert = con.createStatement();		
 			
 			if(task != null) {
-				rs = stmt_Insert.executeQuery("INSERT INTO Tasks VALUES(seqTasks.NEXTVAL" + task.getKategorie() + ", '" + task.getFach() +"', '" + task.getBeschreibung() + "', '" + task.getVon() + "', '" + task.getBis() + "', '" + task.getIsDone() +"')");	
+				int kat=0;
+				if(task.getKategorie()==Kategorie.Hausübung){
+					kat=1;
+				}else if(task.getKategorie()==Kategorie.Schulübung){
+					kat=2;
+				}else if(task.getKategorie()==Kategorie.Schularbeit){
+					kat=3;
+				}else if(task.getKategorie()==Kategorie.GLF){
+					kat=4;
+				}else if(task.getKategorie()==Kategorie.PLF){
+					kat=5;
+				}else if(task.getKategorie()==Kategorie.Mitarbeitskontrolle){
+					kat=6;
+				}
+				
+				rs = stmt_Insert.executeQuery("INSERT INTO Tasks VALUES(seqTasks.NEXTVAL" + kat + ", '" + task.getFach() +"', '" + task.getBeschreibung() + "', '" + task.getVon() + "', '" + task.getBis() + "', '" + task.getIsDone() +"')");	
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
