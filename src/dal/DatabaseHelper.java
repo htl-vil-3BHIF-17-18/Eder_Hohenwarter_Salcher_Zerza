@@ -63,7 +63,8 @@ public class DatabaseHelper {
 			con = DriverManager.getConnection("jdbc:oracle:thin:d3b06/d3b@212.152.179.117:1521:ora11g");
 			stmt_Insert = con.createStatement();
 				
-			stmt_Insert.executeQuery("INSERT INTO Tasks VALUES(seqTasks.NEXTVAL," + task.getKategorie().toString() + ", '" + task.getFach() +"', '" + task.getBeschreibung() + "', TO_DATE('" + task.getVon() + "', 'DD.MM.YYYY'), To_DATE('" + task.getBis() + "', 'DD.MM.YYYY'), '" + task.getIsDone() +"')");	
+			stmt_Insert.executeQuery("INSERT INTO Tasks VALUES(seqTasks.NEXTVAL," + task.getKategorie().toString() + ", '" + task.getFach() +"', '" + task.getBeschreibung() + "', TO_DATE('" + task.getVon() + "', 'DD.MM.YYYY'), To_DATE('" + task.getBis() + "', 'DD.MM.YYYY'), '" + task.getIsDone() +"')");
+			System.out.println("f3");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e1) {
