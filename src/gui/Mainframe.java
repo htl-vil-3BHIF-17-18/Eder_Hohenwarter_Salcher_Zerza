@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
@@ -28,8 +30,12 @@ public class Mainframe extends JFrame implements ActionListener {
 
 	private JLabel lblvon = null;
 	private JLabel lblbis = null;
-	private JTextField txtvon = null;
-	private JTextField txtbis = null;
+	private JLabel lblFilter = null;
+	private JFormattedTextField txtvon = null;
+	private JFormattedTextField txtbis = null;
+	private JComboBox kategorieauswahl = null;
+	private String[] cbKategorienListe = {"Alles","GLF","Mitarbeitskontrolle","Hausübung","PLF","Schularbeit","Schulübung"};
+
 
 	private JMenuBar menubar = null;
 	private JButton btnRefresh = null;
@@ -49,7 +55,7 @@ public class Mainframe extends JFrame implements ActionListener {
 		try {
 			Date date1 = dateFormat.parse("16.5.2001");
 			Date date2 = dateFormat.parse("17.5.2001");
-			this.tasktable.addTask(new Task(Kategorie.GLF, "D", "schwer", date1, date2, true));
+			this.tasktable.addTask(new Task(Kategorie.GLF, "D", "schwer", date1, date2, false));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -66,13 +72,18 @@ public class Mainframe extends JFrame implements ActionListener {
 		btnRefresh.setActionCommand("refresh");
 		tasktable = new ListPanel();
 
-		lblvon = new JLabel("Tasks anzeigen vom:");
-		lblbis = new JLabel("bis:");
+		lblvon = new JLabel("    Tasks anzeigen vom:  ");
+		lblbis = new JLabel("    bis:  ");
+		lblFilter = new JLabel("    Filter:  ");
+		
 
-		txtvon = new JTextField("");
+		txtvon = new JFormattedTextField(dateFormat);
 		txtvon.setMaximumSize(new Dimension(100, 50));
-		txtbis = new JTextField("");
+		txtbis = new JFormattedTextField(dateFormat);
 		txtbis.setMaximumSize(new Dimension(100, 50));
+		
+		kategorieauswahl = new JComboBox(cbKategorienListe);
+		kategorieauswahl.setMaximumSize(new Dimension(150, 50));
 
 		taskdialog = new Taskdialog(this, null, this);
 
@@ -81,6 +92,8 @@ public class Mainframe extends JFrame implements ActionListener {
 		menubar.add(txtvon);
 		menubar.add(lblbis);
 		menubar.add(txtbis);
+		menubar.add(lblFilter);
+		menubar.add(kategorieauswahl);
 
 		this.add(menubar, BorderLayout.PAGE_START);
 		this.add(tasktable, BorderLayout.CENTER);
@@ -104,5 +117,4 @@ public class Mainframe extends JFrame implements ActionListener {
 			
 		}
 	}
-
 }
