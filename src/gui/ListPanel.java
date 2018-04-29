@@ -1,12 +1,15 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import bll.Task;
@@ -47,7 +50,9 @@ public class ListPanel extends JPanel {
 				}
 			}
 		};
+	
 		this.table = new JTable(model);
+		
 		this.scroll = new JScrollPane(this.table);
 
 		this.setLayout(new BorderLayout());

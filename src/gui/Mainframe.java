@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 
 import bll.Kategorie;
 import bll.Task;
+import dal.DatabaseHelper;
 
 public class Mainframe extends JFrame implements ActionListener {
 
@@ -29,77 +30,79 @@ public class Mainframe extends JFrame implements ActionListener {
 	private JLabel lblbis = null;
 	private JTextField txtvon = null;
 	private JTextField txtbis = null;
-	
+
 	private JMenuBar menubar = null;
 	private JButton btnRefresh = null;
 	private Taskdialog taskdialog = null;
 	private ListPanel tasktable = null;
-	
+
 	private DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
-
-	
-	
 	public Mainframe(String title) {
 		super(title);
-		this.setMinimumSize(new Dimension(800,400));
-		this.setPreferredSize(new Dimension(800,400));
+		this.setMinimumSize(new Dimension(800, 400));
+		this.setPreferredSize(new Dimension(800, 400));
 		initializeControls();
-		
-		//***************
-		//ZERZA HIER EIN BEISPIEL FÜR DIE ÜBERGABE :) 
+
+		// ***************
+		// ZERZA HIER EIN BEISPIEL FÜR DIE ÜBERGABE :)
 		try {
-			Date date1=dateFormat.parse("16.5.2001");
-			Date date2=dateFormat.parse("17.5.2001");
-			this.tasktable.addTask(new Task(Kategorie.GLF,"D","schwer",date1,date2,true));
-			}catch(ParseException e)
-			{
-				e.printStackTrace();
-			}
-		//***************
-	
+			Date date1 = dateFormat.parse("16.5.2001");
+			Date date2 = dateFormat.parse("17.5.2001");
+			this.tasktable.addTask(new Task(Kategorie.GLF, "D", "schwer", date1, date2, true));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		// ***************
+
 		this.pack();
 		this.setVisible(true);
 	}
+
 	private void initializeControls() {
 		this.setLayout(new BorderLayout());
 		menubar = new JMenuBar();
 		btnRefresh = new JButton("Refresh");
 		btnRefresh.setActionCommand("refresh");
 		tasktable = new ListPanel();
-		
+
 		lblvon = new JLabel("Tasks anzeigen vom:");
 		lblbis = new JLabel("bis:");
-		
+
 		txtvon = new JTextField("");
-		txtvon.setMaximumSize(new Dimension(100,50));
+		txtvon.setMaximumSize(new Dimension(100, 50));
 		txtbis = new JTextField("");
-		txtbis.setMaximumSize(new Dimension(100,50));
-		
-		taskdialog = new Taskdialog(this,null,this);
-		
+		txtbis.setMaximumSize(new Dimension(100, 50));
+
+		taskdialog = new Taskdialog(this, null, this);
+
 		menubar.add(btnRefresh);
 		menubar.add(lblvon);
 		menubar.add(txtvon);
 		menubar.add(lblbis);
 		menubar.add(txtbis);
-		
-		this.add(menubar,BorderLayout.PAGE_START);
-		this.add(tasktable,BorderLayout.CENTER);
-		this.add(taskdialog,BorderLayout.EAST);
-		
+
+		this.add(menubar, BorderLayout.PAGE_START);
+		this.add(tasktable, BorderLayout.CENTER);
+		this.add(taskdialog, BorderLayout.EAST);
+
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("btnAdd")) {
 			try {
-				this.tasktable.addTask((this.taskdialog.getEingabeTask()));
+				if (this.taskdialog.getEingabeTask() != null) {
+					this.tasktable.addTask((this.taskdialog.getEingabeTask()));
+					DatabaseHelper.saveData(this.taskdialog.getEingabeTask());
+				}
 			} catch (ParseException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+		} else if (e.getActionCommand().equals("refresh")) {
+			
 		}
-		
 	}
+
 }
