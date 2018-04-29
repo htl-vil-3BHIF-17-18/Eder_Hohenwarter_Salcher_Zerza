@@ -7,66 +7,32 @@ import bll.Kategorie;
 import bll.Task;
 
 public class DatabaseHelper {
-	public static ArrayList<Task> loadData() {
+	public static ArrayList<Task> loadData(Kategorie kategorie, java.util.Date von, java.util.Date bis) {
 		Connection con = null;
 		Statement stmt_Select = null;
 		ResultSet rs = null;
-		Task s = null;
+		Task task = null;
 		ArrayList<Task> taskarray=new ArrayList<Task>();
-		java.util.Date von=null;
-		java.util.Date bis=null;
 
 		try {
-
-			/* Step 1 Registrieren des Treibers */
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			/* Step 2 */
 			con = DriverManager.getConnection("jdbc:oracle:thin:d3b06/d3b@212.152.179.117:1521:ora11g");
-			/* Step 3 */
 			stmt_Select = con.createStatement();
-			/* Step 4 */
-			rs = stmt_Select.executeQuery("SELECT * FROM Tasks");
+			rs = stmt_Select.executeQuery("SELECT * FROM Tasks WHERE kategorie LIKE " + kategorie.toString() + " AND TO_CHAR(von,'DD.MM.YYYY') > TO_CHAR(" + von + ",'DD.MM.YYYY') AND TO_CHAR(bis,'DD.MM.YYYY') < TO_CHAR(" + bis +",'DD.MM.YYYY')" );
 
 			while (rs.next()) {
-				/* Step 5 */
-				Kategorie kategorie=null;
-				
-				if(rs.getString(1)=="Hausübung") {
-					kategorie=Kategorie.Hausübung;
-				}
-				
-				else if(rs.getString(1)=="Schularbeit") {
-					kategorie=Kategorie.Schularbeit;	
-				}
-				
-				else if(rs.getString(1)=="Schulübung") {
-					kategorie=Kategorie.Schulübung;
-				}
-				
-				else if(rs.getString(1)=="PLF") {
-					kategorie=Kategorie.PLF;
-				}
-				
-				else if(rs.getString(1)=="Mitarbeitskontrolle") {
-					kategorie=Kategorie.Mitarbeitskontrolle;
-				}
-				
-				else if(rs.getString(1)=="GLF") {
-					kategorie=Kategorie.GLF;
-				}
-				
 				von=rs.getDate(4);
 				bis=rs.getDate(5);
 				
 				if(rs.getString(6)=="true") {
-					s = new Task(kategorie, rs.getString(2), rs.getString(3), von, bis, true);
+					task = new Task(kategorie, rs.getString(2), rs.getString(3), von, bis, true);
 				}
 				
 				else if(rs.getString(6)=="false") {
-					s = new Task(kategorie, rs.getString(2), rs.getString(3), von, bis, false);
+					task = new Task(kategorie, rs.getString(2), rs.getString(3), von, bis, false);
 				}
 				
-				taskarray.add(s);
+				taskarray.add(task);
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -74,7 +40,6 @@ public class DatabaseHelper {
 			e1.printStackTrace();
 		} finally {
 			try {
-				/* Step 6 */
 				rs.close();
 				stmt_Select.close();
 				con.close();
