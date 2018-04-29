@@ -57,29 +57,13 @@ public class DatabaseHelper {
 		Statement stmt_Insert = null;
 
 		try {
+			System.out.println("f1");
 			Class.forName("oracle.jdbc.driver.OracleDriver");
+			System.out.println("f2");
 			con = DriverManager.getConnection("jdbc:oracle:thin:d3b06/d3b@212.152.179.117:1521:ora11g");
-			stmt_Insert = con.createStatement();		
-			
-			if(task != null) {
-				int kat=0;
-				if(task.getKategorie()==Kategorie.Hausübung){
-					kat=1;
-				}else if(task.getKategorie()==Kategorie.Schulübung){
-					kat=2;
-				}else if(task.getKategorie()==Kategorie.Schularbeit){
-					kat=3;
-				}else if(task.getKategorie()==Kategorie.GLF){
-					kat=4;
-				}else if(task.getKategorie()==Kategorie.PLF){
-					kat=5;
-				}else if(task.getKategorie()==Kategorie.Mitarbeitskontrolle){
-					kat=6;
-				}
+			stmt_Insert = con.createStatement();
 				
-				
-				stmt_Insert.executeQuery("INSERT INTO Tasks VALUES(seqTasks.NEXTVAL," + kat + ", '" + task.getFach() +"', '" + task.getBeschreibung() + "', '" + task.getVon() + "', '" + task.getBis() + "', '" + task.getIsDone() +"')");	
-			}
+			stmt_Insert.executeQuery("INSERT INTO Tasks VALUES(seqTasks.NEXTVAL," + task.getKategorie().toString() + ", '" + task.getFach() +"', '" + task.getBeschreibung() + "', TO_DATE('" + task.getVon() + "', 'DD.MM.YYYY'), To_DATE('" + task.getBis() + "', 'DD.MM.YYYY'), '" + task.getIsDone() +"')");	
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e1) {
