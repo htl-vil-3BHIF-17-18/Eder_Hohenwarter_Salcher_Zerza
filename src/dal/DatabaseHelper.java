@@ -21,17 +21,18 @@ public class DatabaseHelper {
 			rs = stmt_Select.executeQuery("SELECT * FROM Tasks WHERE kategorie LIKE " + kategorie.toString() + " AND TO_CHAR(von,'DD.MM.YYYY') > TO_CHAR(" + von + ",'DD.MM.YYYY') AND TO_CHAR(bis,'DD.MM.YYYY') < TO_CHAR(" + bis +",'DD.MM.YYYY')" );
 
 			while (rs.next()) {
-				von=rs.getDate(4);
-				bis=rs.getDate(5);
+				von=rs.getDate(5);
+				bis=rs.getDate(6);
 				
-				if(rs.getString(6)=="true") {
-					task = new Task(kategorie, rs.getString(2), rs.getString(3), von, bis, true);
+				if(rs.getString(7)=="true") {
+					task = new Task(kategorie, rs.getString(3), rs.getString(4), von, bis, true);
 				}
 				
-				else if(rs.getString(6)=="false") {
-					task = new Task(kategorie, rs.getString(2), rs.getString(3), von, bis, false);
+				else if(rs.getString(7)=="false") {
+					task = new Task(kategorie, rs.getString(3), rs.getString(4), von, bis, false);
 				}
 				
+				task.setId(rs.getInt(1));			
 				taskarray.add(task);
 			}
 		} catch (ClassNotFoundException e) {
@@ -59,18 +60,45 @@ public class DatabaseHelper {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			con = DriverManager.getConnection("jdbc:oracle:thin:d3b06/d3b@212.152.179.117:1521:ora11g");
-			stmt_Insert = con.createStatement();
+			stmt_Insert = con.createStatement();		
 			
-			rs = stmt_Insert.executeQuery("INSERT INTO Tasks VALUES(" + task.getKategorie() + ", '" + task.getFach() +"', '" + task.getBeschreibung() + "', '" + task.getVon() + "', '" + task.getBis() + "', '" + task.getIsDone() +"')");
-
-			
+			if(task != null) {
+				rs = stmt_Insert.executeQuery("INSERT INTO Tasks VALUES(seqTasks.NEXTVAL" + task.getKategorie() + ", '" + task.getFach() +"', '" + task.getBeschreibung() + "', '" + task.getVon() + "', '" + task.getBis() + "', '" + task.getIsDone() +"')");	
+			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		} finally {
 			try {
-				/* Step 6 */
+				rs.close();
+				stmt_Insert.close();
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public static void deleteData(Task task) {
+		Connection con = null;
+		Statement stmt_Insert = null;
+		ResultSet rs = null;
+
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			con = DriverManager.getConnection("jdbc:oracle:thin:d3b06/d3b@212.152.179.117:1521:ora11g");
+			stmt_Insert = con.createStatement();		
+			
+			if(task != null) {
+				rs = stmt_Insert.executeQuery("DELETE FROM Tasks WHERE ....");	
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		} finally {
+			try {
 				rs.close();
 				stmt_Insert.close();
 				con.close();
