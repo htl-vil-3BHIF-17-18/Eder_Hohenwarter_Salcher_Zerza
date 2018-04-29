@@ -28,6 +28,7 @@ public class ListPanel extends JPanel {
 	private JScrollPane scroll = null;
 	private JTable table = null;
 	private Object[] taskArray = null;
+	
 
 	public ListPanel() {
 		initializeControls();
