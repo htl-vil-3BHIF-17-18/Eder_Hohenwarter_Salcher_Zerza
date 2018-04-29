@@ -119,4 +119,8 @@ public class DatabaseHelper {
 			}
 		}
 	}
+	
+	public static void update() {
+		
+	}
 }
