@@ -51,24 +51,19 @@ public class DatabaseHelper {
 		return taskarray;
 	}
 
-	public static void saveData(ArrayList<Task> taskarray) {
+	public static void saveData(Task task) {
 		Connection con = null;
 		Statement stmt_Insert = null;
 		ResultSet rs = null;
-		//nfl
-		try {
-			/* Step 1 Registrieren des Treibers */
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			/* Step 2 */
-			con = DriverManager.getConnection("jdbc:oracle:thin:d3b06/d3b@212.152.179.117:1521:ora11g");
 
-			/* Step 3 */
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			con = DriverManager.getConnection("jdbc:oracle:thin:d3b06/d3b@212.152.179.117:1521:ora11g");
 			stmt_Insert = con.createStatement();
-			/* Step 4 */
 			
-			for(Task t : taskarray) {
-				rs = stmt_Insert.executeQuery("INSERT INTO schueler VALUES(" + t.getKategorie() + ", '" + t.getFach() +"', '" + t.getBeschreibung() + "', '" + t.getVon() + "', '" + t.getBis() + "', '" + t.getIsDone() +"')");
-			}
+			rs = stmt_Insert.executeQuery("INSERT INTO Tasks VALUES(" + task.getKategorie() + ", '" + task.getFach() +"', '" + task.getBeschreibung() + "', '" + task.getVon() + "', '" + task.getBis() + "', '" + task.getIsDone() +"')");
+
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e1) {

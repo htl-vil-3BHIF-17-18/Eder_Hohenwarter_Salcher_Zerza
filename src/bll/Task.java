@@ -3,7 +3,7 @@ package bll;
 import java.util.Date;
 
 public class Task {
-	
+	private int id=0;
 	private Kategorie kategorie = null;
 	private String fach="";
 	private String beschreibung="";
@@ -19,14 +19,19 @@ public class Task {
 				+ ", Bis: " + bis;
 	}
 	
-	public Task(Kategorie kategorie, String fach, String beschreibung, Date von, Date bis, boolean isDone) {
+	public Task(int id, Kategorie kategorie, String fach, String beschreibung, Date von, Date bis, boolean isDone) {
 		super();
+		this.id=id;
 		this.kategorie = kategorie;
 		this.fach = fach;
 		this.beschreibung = beschreibung;
 		this.von = von;
 		this.bis = bis;
 		this.isDone = isDone;
+	}
+	
+	public int getId() {
+		return this.id;
 	}
 
 	public boolean getIsDone() {
