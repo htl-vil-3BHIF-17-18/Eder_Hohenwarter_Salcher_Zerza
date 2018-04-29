@@ -55,7 +55,6 @@ public class DatabaseHelper {
 	public static void saveData(Task task) {
 		Connection con = null;
 		Statement stmt_Insert = null;
-		ResultSet rs = null;
 
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -78,7 +77,7 @@ public class DatabaseHelper {
 					kat=6;
 				}
 				
-				rs = stmt_Insert.executeQuery("INSERT INTO Tasks VALUES(seqTasks.NEXTVAL" + kat + ", '" + task.getFach() +"', '" + task.getBeschreibung() + "', '" + task.getVon() + "', '" + task.getBis() + "', '" + task.getIsDone() +"')");	
+				stmt_Insert.executeQuery("INSERT INTO Tasks VALUES(seqTasks.NEXTVAL," + kat + ", '" + task.getFach() +"', '" + task.getBeschreibung() + "', '" + task.getVon() + "', '" + task.getBis() + "', '" + task.getIsDone() +"')");	
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -86,7 +85,6 @@ public class DatabaseHelper {
 			e1.printStackTrace();
 		} finally {
 			try {
-				rs.close();
 				stmt_Insert.close();
 				con.close();
 			} catch (SQLException e) {
