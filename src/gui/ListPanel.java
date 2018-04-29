@@ -3,6 +3,8 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Date;
 import java.util.Vector;
 
@@ -11,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import bll.Task;
 
@@ -50,20 +53,42 @@ public class ListPanel extends JPanel {
 				}
 			}
 		};
-	
-		this.table = new JTable(model);
-		
+
+		this.table = new JTable(model) {
+			@Override
+			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+				Component c = super.prepareRenderer(renderer, row, column);
+
+				if (!isRowSelected(row)) {
+					if (table.getColumnCount() >= 0) {
+						String status = getModel().getValueAt(row, 5).toString();
+
+						if (status.equalsIgnoreCase("true")) {
+							c.setBackground(Color.GREEN);
+						}
+						if (status.equalsIgnoreCase("false")) {
+							c.setBackground(Color.RED);
+						}
+
+					}
+				} else {
+					c.setBackground(table.getBackground());
+				}
+				table.repaint();
+				return c;
+			}
+		};
+
 		this.scroll = new JScrollPane(this.table);
 
 		this.setLayout(new BorderLayout());
 		this.add(this.scroll, BorderLayout.CENTER);
 
-
 	}
 
 	public void addTask(Task t) {
-		this.taskArray = new Object[] { t.getKategorie().toString(), t.getFach(), t.getBeschreibung(), t.getVon(), t.getBis(),
-				t.getIsDone() };
+		this.taskArray = new Object[] { t.getKategorie().toString(), t.getFach(), t.getBeschreibung(), t.getVon(),
+				t.getBis(), t.getIsDone() };
 		this.model.addRow(this.taskArray);
-		}
+	}
 }
