@@ -26,7 +26,7 @@ public class Taskdialog extends JPanel{
 	private JLabel lblFach = null;
 	private JLabel lblBeschreibung = null;
 	private JButton btnAdd = null;
-	
+	//Test for Push please delete
 	private JComboBox  cbKategorie= null;
 	private Kategorie[] cbKategorienListe = {Kategorie.GLF,Kategorie.Mitarbeitskontrolle,Kategorie.Hausübung,Kategorie.PLF,Kategorie.Schularbeit,Kategorie.Schulübung};
 	private JFormattedTextField txtVon = null;
