@@ -96,16 +96,15 @@ public class DatabaseHelper {
 	
 	public static void deleteData(Task task) {
 		Connection con = null;
-		Statement stmt_Insert = null;
-		ResultSet rs = null;
+		Statement stmt_Delete = null;
 
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			con = DriverManager.getConnection("jdbc:oracle:thin:d3b06/d3b@212.152.179.117:1521:ora11g");
-			stmt_Insert = con.createStatement();		
+			stmt_Delete = con.createStatement();		
 			
 			if(task != null) {
-				rs = stmt_Insert.executeQuery("DELETE FROM Tasks WHERE ....");	
+				stmt_Delete.executeQuery("DELETE FROM Tasks WHERE id=" + task.getId());	
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -113,8 +112,7 @@ public class DatabaseHelper {
 			e1.printStackTrace();
 		} finally {
 			try {
-				rs.close();
-				stmt_Insert.close();
+				stmt_Delete.close();
 				con.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
