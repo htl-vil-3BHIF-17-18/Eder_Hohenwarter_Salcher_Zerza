@@ -37,6 +37,7 @@ public class Mainframe extends JFrame implements ActionListener {
 	private String[] cbKategorienListe = {"Alles","GLF","Mitarbeitskontrolle","Hausübung","PLF","Schularbeit","Schulübung"};
 
 
+	
 	private JMenuBar menubar = null;
 	private JButton btnRefresh = null;
 	private Taskdialog taskdialog = null;
