@@ -28,7 +28,7 @@ public class ListPanel extends JPanel {
 	private JScrollPane scroll = null;
 	private JTable table = null;
 	private Object[] taskArray = null;
-	
+	private boolean insert=true;
 
 	public ListPanel() {
 		initializeControls();
@@ -92,11 +92,18 @@ public class ListPanel extends JPanel {
 
 	}
 
-
+	public void setInsert(boolean insert) {
+		this.insert=insert;
+	}
+	
 	public void addTask(Task t) {
-		this.taskArray = new Object[] { t.getKategorie().toString(), t.getFach(), t.getBeschreibung(), t.getVon(),
-				t.getBis(), t.getIsDone() };
-		this.model.addRow(this.taskArray);
+		if(this.insert==true) {
+			this.taskArray = new Object[] { t.getKategorie().toString(), t.getFach(), t.getBeschreibung(), t.getVon(),
+					t.getBis(), t.getIsDone() };
+			this.model.addRow(this.taskArray);
+		}
+		
+		this.insert=true;
 	}
 
 }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import bll.Kategorie;
 import bll.Task;
+import gui.ListPanel;
 
 public class DatabaseHelper {
 	public static ArrayList<Task> loadData(Kategorie kategorie, java.util.Date von, java.util.Date bis) {
@@ -54,7 +55,7 @@ public class DatabaseHelper {
 		return taskarray;
 	}
 
-	public static void saveData(Task task) throws ParseException {
+	public static void saveData(Task task, ListPanel listpanel) throws ParseException {
 		Connection con = null;
 		Statement stmt_Insert = null;
 
@@ -71,15 +72,18 @@ public class DatabaseHelper {
 			stmt_Insert.executeQuery("INSERT INTO Tasks Values(seqTasks.NEXTVAL, '" + task.getKategorie().toString() + "', '" + task.getFach() + "', '" + task.getBeschreibung() + "', TO_DATE('" + sdf.format(task.getVon()).toString() + "'), TO_DATE('" + sdf.format(task.getBis()).toString() + "'), 'true')");
 			System.out.println("f3");	
 		} catch (ClassNotFoundException e) {
+			listpanel.setInsert(false);
 			e.printStackTrace();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			listpanel.setInsert(false);
 		} finally {
 			try {
 				stmt_Insert.close();
 				con.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
+				listpanel.setInsert(false);
 			}
 		}
 	}

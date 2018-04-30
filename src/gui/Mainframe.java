@@ -107,8 +107,8 @@ public class Mainframe extends JFrame implements ActionListener {
 		if (e.getActionCommand().equals("btnAdd")) {
 			try {
 				if (this.taskdialog.getEingabeTask() != null) {
+					DatabaseHelper.saveData(this.taskdialog.getEingabeTask(), this.tasktable);
 					this.tasktable.addTask((this.taskdialog.getEingabeTask()));
-					DatabaseHelper.saveData(this.taskdialog.getEingabeTask());
 				}
 			} catch (ParseException e1) {
 				// TODO Auto-generated catch block
