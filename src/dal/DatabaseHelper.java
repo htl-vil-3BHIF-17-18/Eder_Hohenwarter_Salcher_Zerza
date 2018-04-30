@@ -11,7 +11,7 @@ import gui.ListPanel;
 
 public class DatabaseHelper {
 	public static ArrayList<Task> loadData(String sortKategorie, java.util.Date von, java.util.Date bis) {
-		SimpleDateFormat sdf=new SimpleDateFormat("dd.mm.yyyy");
+		SimpleDateFormat sdf=new SimpleDateFormat("DD.MM.YYYY");
 		Connection con = null;
 		Statement stmt_Select = null;
 		ResultSet rs = null;
@@ -25,9 +25,11 @@ public class DatabaseHelper {
 			con = DriverManager.getConnection("jdbc:oracle:thin:d3b06/d3b@212.152.179.117:1521:ora11g");
 			stmt_Select = con.createStatement();
 			
+			System.out.println(von.toLocaleString().split(" ")[0]);
+			
 			if(sortKategorie=="Alles")
 			{
-				rs = stmt_Select.executeQuery("SELECT * FROM Tasks  WHERE TO_CHAR(von,'DD.MM.YYYY') > '" + sdf.format(von).toString() + "' AND TO_CHAR(bis,'DD.MM.YYYY') < '20.10.2018'");
+				rs = stmt_Select.executeQuery("SELECT * FROM Tasks WHERE von >= TO_DATE('" + von.toLocaleString().split(" ")[0] + "', 'dd.mm.yyyy') AND bis <= TO_DATE('" + bis.toLocaleString().split(" ")[0] + "', 'dd.mm.yyyy')");
 			}else {
 				rs = stmt_Select.executeQuery("SELECT * FROM Tasks WHERE kategorie LIKE " + sortKategorie + " AND TO_CHAR(von,'DD.MM.YYYY') > '" + sdf.format(von) + "' AND TO_CHAR(bis,'DD.MM.YYYY') < '" + sdf.format(bis) +"'" );
 			}
