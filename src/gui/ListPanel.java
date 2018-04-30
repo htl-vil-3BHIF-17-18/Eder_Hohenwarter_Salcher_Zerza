@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.RowId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
 
@@ -105,6 +106,16 @@ public class ListPanel extends JPanel {
 		}
 		
 		this.insert=true;
+	}
+	
+	public void addListInTable(ArrayList<Task> liste)
+	{
+		for(Task t : liste)
+		{
+			this.taskArray = new Object[] { t.getKategorie().toString(), t.getFach(), t.getBeschreibung(), t.getVon(),
+					t.getBis(), t.getIsDone() };
+			this.model.addRow(this.taskArray);
+		}
 	}
 
 	public void deleteTable() {

@@ -10,29 +10,58 @@ import bll.Task;
 import gui.ListPanel;
 
 public class DatabaseHelper {
-	public static ArrayList<Task> loadData(Kategorie kategorie, java.util.Date von, java.util.Date bis) {
+	public static ArrayList<Task> loadData(String sortKategorie, java.util.Date von, java.util.Date bis) {
 		Connection con = null;
 		Statement stmt_Select = null;
 		ResultSet rs = null;
 		Task task = null;
 		ArrayList<Task> taskarray=new ArrayList<Task>();
+		String kategorie=null;
+		Kategorie k=null;
 
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			con = DriverManager.getConnection("jdbc:oracle:thin:d3b06/d3b@212.152.179.117:1521:ora11g");
 			stmt_Select = con.createStatement();
-			rs = stmt_Select.executeQuery("SELECT * FROM Tasks WHERE kategorie LIKE " + kategorie.toString() + " AND TO_CHAR(von,'DD.MM.YYYY') > TO_CHAR(" + von + ",'DD.MM.YYYY') AND TO_CHAR(bis,'DD.MM.YYYY') < TO_CHAR(" + bis +",'DD.MM.YYYY')" );
+			if(sortKategorie=="Alles")
+			{
+				rs = stmt_Select.executeQuery("SELECT * FROM Tasks WHERE TO_CHAR(von,'DD.MM.YYYY') > TO_CHAR(" + von + ",'DD.MM.YYYY') AND TO_CHAR(bis,'DD.MM.YYYY') < TO_CHAR(" + bis +",'DD.MM.YYYY')" );
+
+			}else {
+				rs = stmt_Select.executeQuery("SELECT * FROM Tasks WHERE kategorie LIKE " + sortKategorie + " AND TO_CHAR(von,'DD.MM.YYYY') > TO_CHAR(" + von + ",'DD.MM.YYYY') AND TO_CHAR(bis,'DD.MM.YYYY') < TO_CHAR(" + bis +",'DD.MM.YYYY')" );
+			}
 
 			while (rs.next()) {
 				von=rs.getDate(5);
 				bis=rs.getDate(6);
+				kategorie=rs.getString(1);
+				
+				if(kategorie=="Hausübung")
+				{
+					k=Kategorie.Hausübung;
+				}else if(kategorie=="Schularbeit")
+				{
+					k=Kategorie.Schularbeit;
+				}else if(kategorie=="Schulübung")
+				{
+					k=Kategorie.Schulübung;
+				}else if(kategorie=="PLF")
+				{
+					k=Kategorie.PLF;
+				}else if(kategorie=="Mitarbeitskontrolle")
+				{
+					k=Kategorie.Mitarbeitskontrolle;
+				}else if(kategorie=="GLF")
+				{
+					k=Kategorie.GLF;
+				}
 				
 				if(rs.getString(7)=="true") {
-					task = new Task(kategorie, rs.getString(3), rs.getString(4), von, bis, true);
+					task = new Task(k, rs.getString(3), rs.getString(4), von, bis, true);
 				}
 				
 				else if(rs.getString(7)=="false") {
-					task = new Task(kategorie, rs.getString(3), rs.getString(4), von, bis, false);
+					task = new Task(k, rs.getString(3), rs.getString(4), von, bis, false);
 				}
 				
 				task.setId(rs.getInt(1));			

@@ -116,7 +116,12 @@ public class Mainframe extends JFrame implements ActionListener {
 		} else if (e.getActionCommand().equals("refresh")) {
 			System.out.println("hey");
 			this.tasktable.deleteTable();
-		//	this.tasktable.addListInTable(DatabaseHelper.loadData(this.kategorieauswahl.getSelectedItem().toString(), dateFormat.parse(this.txtvon.getText()), dateFormat.parse(this.txtbis.getText())));
+			try {
+				this.tasktable.addListInTable(DatabaseHelper.loadData(this.kategorieauswahl.getSelectedItem().toString(), dateFormat.parse(this.txtvon.getText()), dateFormat.parse(this.txtbis.getText())));
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 }
