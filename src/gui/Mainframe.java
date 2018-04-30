@@ -70,6 +70,7 @@ public class Mainframe extends JFrame implements ActionListener {
 		menubar = new JMenuBar();
 		btnRefresh = new JButton("Refresh");
 		btnRefresh.setActionCommand("refresh");
+		btnRefresh.addActionListener(this);
 		tasktable = new ListPanel();
 
 		lblvon = new JLabel("    Tasks anzeigen vom:  ");
@@ -113,8 +114,9 @@ public class Mainframe extends JFrame implements ActionListener {
 				e1.printStackTrace();
 			}
 		} else if (e.getActionCommand().equals("refresh")) {
+			System.out.println("hey");
 			this.tasktable.deleteTable();
-			this.tasktable.addListInTable(DatabaseHelper.loadData(this.kategorieauswahl.getSelectedItem().toString(), dateFormat.parse(this.txtvon.getText()), dateFormat.parse(this.txtbis.getText())));
+		//	this.tasktable.addListInTable(DatabaseHelper.loadData(this.kategorieauswahl.getSelectedItem().toString(), dateFormat.parse(this.txtvon.getText()), dateFormat.parse(this.txtbis.getText())));
 		}
 	}
 }
