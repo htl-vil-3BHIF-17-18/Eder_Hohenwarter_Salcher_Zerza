@@ -13,9 +13,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
 
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -24,8 +27,9 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
 import bll.Task;
+import dal.DatabaseHelper;
 
-public class ListPanel extends JPanel {
+public class ListPanel extends JPanel implements TableModelListener{
 
 	private String[] titles = null;
 	private DefaultTableModel model = null;
@@ -93,8 +97,8 @@ public class ListPanel extends JPanel {
 			}
 		};
 		
-		TableColumnModel tcm = table.getColumnModel();
-		tcm.removeColumn(tcm.getColumn(0));
+		table.getColumnModel().removeColumn(table.getColumnModel().getColumn(0));
+		table.getModel().addTableModelListener(this);
 				
 		popup = new MyPopupMenu(this.al);
 		this.table.addMouseListener(new PopupListener(this.popup));
@@ -142,6 +146,17 @@ public class ListPanel extends JPanel {
 		for (int i = rowCount - 1; i >= 0; i--) {
 		    this.model.removeRow(i);
 		}
+	}
+
+	@Override
+	public void tableChanged(TableModelEvent e) {
+
+		if(e.getColumn()==6)
+		{
+			int row=e.getFirstRow();
+			DatabaseHelper.updateData((Integer) this.model.getValueAt(row, 0),(Boolean) this.model.getValueAt(row, 6));
+		}
+		
 	}
 
 }
