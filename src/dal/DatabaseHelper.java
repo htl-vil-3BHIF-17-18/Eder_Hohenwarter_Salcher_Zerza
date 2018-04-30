@@ -26,7 +26,7 @@ public class DatabaseHelper {
 			
 			if(sortKategorie=="Alles")
 			{
-				rs = stmt_Select.executeQuery("SELECT * FROM Tasks" );
+				rs = stmt_Select.executeQuery("SELECT * FROM Tasks WHERE TO_CHAR(von,'DD.MM.YYYY') > TO_CHAR(" + von + ",'DD.MM.YYYY') AND TO_CHAR(bis,'DD.MM.YYYY') < TO_CHAR(" + bis +",'DD.MM.YYYY')");
 
 			}else {
 				rs = stmt_Select.executeQuery("SELECT * FROM Tasks WHERE kategorie LIKE " + sortKategorie + " AND TO_CHAR(von,'DD.MM.YYYY') > TO_CHAR(" + von + ",'DD.MM.YYYY') AND TO_CHAR(bis,'DD.MM.YYYY') < TO_CHAR(" + bis +",'DD.MM.YYYY')" );
@@ -36,42 +36,38 @@ public class DatabaseHelper {
 				von=rs.getDate(5);
 				bis=rs.getDate(6);
 				kategorie=rs.getString(2);
-				System.out.println(kategorie);
 				
-				/*
-				if(kategorie=="Hausübung")
+				
+				if(kategorie.contains("Hausübung"))
 				{
 					k=Kategorie.Hausübung;
-				}else if(kategorie=="Schularbeit")
+				}else if(kategorie.contains("Schularbeit"))
 				{
 					k=Kategorie.Schularbeit;
-				}else if(kategorie=="Schulübung")
+				}else if(kategorie.contains("Schulübung"))
 				{
 					k=Kategorie.Schulübung;
-				}else if(kategorie=="PLF")
+				}else if(kategorie.contains("PLF"))
 				{
 					k=Kategorie.PLF;
-				}else if(kategorie=="Mitarbeitskontrolle")
+				}else if(kategorie.contains("Mitarbeitskontrolle"))
 				{
 					k=Kategorie.Mitarbeitskontrolle;
-				}else if(kategorie.toString()=="GLF")
+				}else if(kategorie.contains("GLF"))
 				{
 					System.out.println("stimmt");
 					k=Kategorie.GLF;
-				}*/
+				}
 				
-				System.out.println(rs.getString(7));
-				task = new Task(Kategorie.GLF, rs.getString(3), rs.getString(4), von, bis, true);
-				
-				if(rs.getString(7)=="true") {
+				if(rs.getString(7).contains("true")) {
 					task = new Task(k, rs.getString(3), rs.getString(4), von, bis, true);
 				}
 				
-				else if(rs.getString(7)=="false") {
+				else if(rs.getString(7).contains("false")) {
 					task = new Task(k, rs.getString(3), rs.getString(4), von, bis, false);
 				}
-
-				System.out.println(task.toString());
+				task.setId(rs.getInt(1));
+				
 				taskarray.add(task);
 			}
 		} catch (ClassNotFoundException e) {
