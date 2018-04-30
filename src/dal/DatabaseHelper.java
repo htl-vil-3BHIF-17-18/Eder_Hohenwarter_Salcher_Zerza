@@ -143,7 +143,33 @@ public class DatabaseHelper {
 		}
 	}
 	
-	public static void update() {
-		
+	public static void updateData(int id, boolean isDone) {
+		Connection con = null;
+		Statement stmt_Update = null;
+
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			con = DriverManager.getConnection("jdbc:oracle:thin:d3b06/d3b@212.152.179.117:1521:ora11g");
+			stmt_Update = con.createStatement();		
+			
+			if(isDone==true) {
+				stmt_Update.executeQuery("UPDATE Tasks SET IsDone='true' WHERE id=" + id + "");
+			}	
+			
+			else if(isDone==false) {
+				stmt_Update.executeQuery("UPDATE Tasks SET isDone='false' WHERE id=" + id + "");
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		} finally {
+			try {
+				stmt_Update.close();
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
