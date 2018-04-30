@@ -40,6 +40,10 @@ public class Task {
 	public boolean getIsDone() {
 		return this.isDone;
 	}
+	
+	public void setIsDone(boolean isDone) {
+		this.isDone=isDone;
+	}
 
 	public Kategorie getKategorie() {
 		return kategorie;

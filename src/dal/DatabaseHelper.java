@@ -23,9 +23,10 @@ public class DatabaseHelper {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			con = DriverManager.getConnection("jdbc:oracle:thin:d3b06/d3b@212.152.179.117:1521:ora11g");
 			stmt_Select = con.createStatement();
+			
 			if(sortKategorie=="Alles")
 			{
-				rs = stmt_Select.executeQuery("SELECT * FROM Tasks WHERE TO_CHAR(von,'DD.MM.YYYY') > TO_CHAR(" + von + ",'DD.MM.YYYY') AND TO_CHAR(bis,'DD.MM.YYYY') < TO_CHAR(" + bis +",'DD.MM.YYYY')" );
+				rs = stmt_Select.executeQuery("SELECT * FROM Tasks" );
 
 			}else {
 				rs = stmt_Select.executeQuery("SELECT * FROM Tasks WHERE kategorie LIKE " + sortKategorie + " AND TO_CHAR(von,'DD.MM.YYYY') > TO_CHAR(" + von + ",'DD.MM.YYYY') AND TO_CHAR(bis,'DD.MM.YYYY') < TO_CHAR(" + bis +",'DD.MM.YYYY')" );
@@ -34,8 +35,10 @@ public class DatabaseHelper {
 			while (rs.next()) {
 				von=rs.getDate(5);
 				bis=rs.getDate(6);
-				kategorie=rs.getString(1);
+				kategorie=rs.getString(2);
+				System.out.println(kategorie);
 				
+				/*
 				if(kategorie=="Hausübung")
 				{
 					k=Kategorie.Hausübung;
@@ -51,10 +54,14 @@ public class DatabaseHelper {
 				}else if(kategorie=="Mitarbeitskontrolle")
 				{
 					k=Kategorie.Mitarbeitskontrolle;
-				}else if(kategorie=="GLF")
+				}else if(kategorie.toString()=="GLF")
 				{
+					System.out.println("stimmt");
 					k=Kategorie.GLF;
-				}
+				}*/
+				
+				System.out.println(rs.getString(7));
+				task = new Task(Kategorie.GLF, rs.getString(3), rs.getString(4), von, bis, true);
 				
 				if(rs.getString(7)=="true") {
 					task = new Task(k, rs.getString(3), rs.getString(4), von, bis, true);
@@ -63,8 +70,8 @@ public class DatabaseHelper {
 				else if(rs.getString(7)=="false") {
 					task = new Task(k, rs.getString(3), rs.getString(4), von, bis, false);
 				}
-				
-				task.setId(rs.getInt(1));			
+
+				System.out.println(task.toString());
 				taskarray.add(task);
 			}
 		} catch (ClassNotFoundException e) {
@@ -87,6 +94,8 @@ public class DatabaseHelper {
 	public static void saveData(Task task, ListPanel listpanel) throws ParseException {
 		Connection con = null;
 		Statement stmt_Insert = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.mm.yyyy");
+		String s="";
 
 		try {
 			System.out.println("f1");
@@ -94,11 +103,15 @@ public class DatabaseHelper {
 			System.out.println("f2");
 			con = DriverManager.getConnection("jdbc:oracle:thin:d3b06/d3b@212.152.179.117:1521:ora11g");
 			stmt_Insert = con.createStatement();
-			SimpleDateFormat sdf = new SimpleDateFormat("dd.mm.yyyy");
 			System.out.println(sdf.format(task.getVon()).toString());
 			System.out.println(sdf.format(task.getBis()).toString());
-
-			stmt_Insert.executeQuery("INSERT INTO Tasks Values(seqTasks.NEXTVAL, '" + task.getKategorie().toString() + "', '" + task.getFach() + "', '" + task.getBeschreibung() + "', TO_DATE('" + sdf.format(task.getVon()).toString() + "'), TO_DATE('" + sdf.format(task.getBis()).toString() + "'), 'true')");
+			
+			//isDone nur zum Testen vordefiniert
+			task.setIsDone(false);
+			
+			s="true";
+			
+			stmt_Insert.executeQuery("INSERT INTO Tasks Values(seqTasks.NEXTVAL, '" + task.getKategorie().toString() + "', '" + task.getFach() + "', '" + task.getBeschreibung() + "', TO_DATE('" + sdf.format(task.getVon()).toString() + "'), TO_DATE('" + sdf.format(task.getBis()).toString() + "'), '" + s + "')");
 			System.out.println("f3");	
 		} catch (ClassNotFoundException e) {
 			listpanel.setInsert(false);

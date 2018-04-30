@@ -110,6 +110,8 @@ public class ListPanel extends JPanel {
 	
 	public void addListInTable(ArrayList<Task> liste)
 	{
+		System.out.println("ff");
+		
 		for(Task t : liste)
 		{
 			this.taskArray = new Object[] { t.getKategorie().toString(), t.getFach(), t.getBeschreibung(), t.getVon(),

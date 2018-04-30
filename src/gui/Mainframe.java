@@ -116,7 +116,9 @@ public class Mainframe extends JFrame implements ActionListener {
 		} else if (e.getActionCommand().equals("refresh")) {
 			System.out.println("hey");
 			this.tasktable.deleteTable();
+			System.out.println("hallo");
 			try {
+				System.out.println("");
 				this.tasktable.addListInTable(DatabaseHelper.loadData(this.kategorieauswahl.getSelectedItem().toString(), dateFormat.parse(this.txtvon.getText()), dateFormat.parse(this.txtbis.getText())));
 			} catch (ParseException e1) {
 				// TODO Auto-generated catch block
