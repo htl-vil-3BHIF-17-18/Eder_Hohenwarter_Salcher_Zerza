@@ -1,6 +1,8 @@
 package dal;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import bll.Kategorie;
@@ -52,7 +54,7 @@ public class DatabaseHelper {
 		return taskarray;
 	}
 
-	public static void saveData(Task task) {
+	public static void saveData(Task task) throws ParseException {
 		Connection con = null;
 		Statement stmt_Insert = null;
 
@@ -62,9 +64,12 @@ public class DatabaseHelper {
 			System.out.println("f2");
 			con = DriverManager.getConnection("jdbc:oracle:thin:d3b06/d3b@212.152.179.117:1521:ora11g");
 			stmt_Insert = con.createStatement();
-				
-			stmt_Insert.executeQuery("INSERT INTO Tasks VALUES(seqTasks.NEXTVAL," + task.getKategorie().toString() + ", '" + task.getFach() +"', '" + task.getBeschreibung() + "', TO_DATE('" + task.getVon() + "', 'DD.MM.YYYY'), To_DATE('" + task.getBis() + "', 'DD.MM.YYYY'), '" + task.getIsDone() +"')");
-			System.out.println("f3");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd.mm.yyyy");
+			System.out.println(sdf.format(task.getVon()).toString());
+			System.out.println(sdf.format(task.getBis()).toString());
+
+			stmt_Insert.executeQuery("INSERT INTO Tasks Values(seqTasks.NEXTVAL, '" + task.getKategorie().toString() + "', '" + task.getFach() + "', '" + task.getBeschreibung() + "', TO_DATE('" + sdf.format(task.getVon()).toString() + "'), TO_DATE('" + sdf.format(task.getBis()).toString() + "'), 'true')");
+			System.out.println("f3");	
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e1) {
