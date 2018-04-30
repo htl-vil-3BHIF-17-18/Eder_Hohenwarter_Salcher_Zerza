@@ -51,7 +51,7 @@ public class Mainframe extends JFrame implements ActionListener {
 		initializeControls();
 
 		// ***************
-		// ZERZA HIER EIN BEISPIEL FÜR DIE ÜBERGABE :)
+		// dZERZA HIER EIN BEISPIEL FÜR DIE ÜBERGABE :)
 		try {
 			Date date1 = dateFormat.parse("16.5.2001");
 			Date date2 = dateFormat.parse("17.5.2001");
