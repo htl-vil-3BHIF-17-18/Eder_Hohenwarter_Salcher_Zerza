@@ -93,7 +93,8 @@ public class ListPanel extends JPanel {
 			}
 		};
 		
-		this.table.removeColumn(this.table.getColumnModel().getColumn(0));
+		TableColumnModel tcm = table.getColumnModel();
+		tcm.removeColumn(tcm.getColumn(0));
 				
 		popup = new MyPopupMenu(this.al);
 		this.table.addMouseListener(new PopupListener(this.popup));
@@ -120,15 +121,14 @@ public class ListPanel extends JPanel {
 	}
 	public int getSelectedTaskIDandDeleteRow() {
 		int id =table.getSelectedRow();
-		this.model.removeRow(id);
+		int rgw=Integer.parseInt(this.model.getValueAt(id, 0).toString());
 		
-		return Integer.parseInt(this.model.getValueAt(id, 0).toString());
+		this.model.removeRow(id);
+		return rgw;
 	}
 	
 	public void addListInTable(ArrayList<Task> liste)
 	{
-		System.out.println("ff");
-		
 		for(Task t : liste)
 		{
 			this.taskArray = new Object[] {t.getId(), t.getKategorie().toString(), t.getFach(), t.getBeschreibung(), t.getVon(),
