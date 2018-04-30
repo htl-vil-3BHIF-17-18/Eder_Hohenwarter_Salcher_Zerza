@@ -27,17 +27,16 @@ public class Mainframe extends JFrame implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1181889914322477954L;
-//Test for push please delete
+	// Test for push please delete
 	private JLabel lblvon = null;
 	private JLabel lblbis = null;
 	private JLabel lblFilter = null;
 	private JFormattedTextField txtvon = null;
 	private JFormattedTextField txtbis = null;
 	private JComboBox kategorieauswahl = null;
-	private String[] cbKategorienListe = {"Alles","GLF","Mitarbeitskontrolle","Hausübung","PLF","Schularbeit","Schulübung"};
+	private String[] cbKategorienListe = { "Alles", "GLF", "Mitarbeitskontrolle", "Hausübung", "PLF", "Schularbeit",
+			"Schulübung" };
 
-
-	
 	private JMenuBar menubar = null;
 	private JButton btnRefresh = null;
 	private Taskdialog taskdialog = null;
@@ -71,18 +70,18 @@ public class Mainframe extends JFrame implements ActionListener {
 		menubar = new JMenuBar();
 		btnRefresh = new JButton("Refresh");
 		btnRefresh.setActionCommand("refresh");
+		btnRefresh.addActionListener(this);
 		tasktable = new ListPanel();
 
 		lblvon = new JLabel("    Tasks anzeigen vom:  ");
 		lblbis = new JLabel("    bis:  ");
 		lblFilter = new JLabel("    Filter:  ");
-		
 
 		txtvon = new JFormattedTextField(dateFormat);
 		txtvon.setMaximumSize(new Dimension(100, 50));
 		txtbis = new JFormattedTextField(dateFormat);
 		txtbis.setMaximumSize(new Dimension(100, 50));
-		
+
 		kategorieauswahl = new JComboBox(cbKategorienListe);
 		kategorieauswahl.setMaximumSize(new Dimension(150, 50));
 
@@ -115,7 +114,9 @@ public class Mainframe extends JFrame implements ActionListener {
 				e1.printStackTrace();
 			}
 		} else if (e.getActionCommand().equals("refresh")) {
-			
+			System.out.println("hey");
+			this.tasktable.deleteTable();
+		//	this.tasktable.addListInTable(DatabaseHelper.loadData(this.kategorieauswahl.getSelectedItem().toString(), dateFormat.parse(this.txtvon.getText()), dateFormat.parse(this.txtbis.getText())));
 		}
 	}
 }

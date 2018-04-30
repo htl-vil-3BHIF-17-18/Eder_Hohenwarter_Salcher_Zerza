@@ -7,6 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.sql.RowId;
 import java.util.Date;
 import java.util.Vector;
 
@@ -104,6 +105,13 @@ public class ListPanel extends JPanel {
 		}
 		
 		this.insert=true;
+	}
+
+	public void deleteTable() {
+		int rowCount = this.model.getRowCount();
+		for (int i = rowCount - 1; i >= 0; i--) {
+		    this.model.removeRow(i);
+		}
 	}
 
 }
