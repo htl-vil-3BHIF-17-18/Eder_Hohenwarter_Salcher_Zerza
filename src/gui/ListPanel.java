@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
@@ -20,6 +21,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 
 import bll.Task;
 
@@ -31,29 +33,34 @@ public class ListPanel extends JPanel {
 	private JTable table = null;
 	private Object[] taskArray = null;
 	private boolean insert=true;
+	private MyPopupMenu popup=null;
+	private ActionListener al=null;
 
-	public ListPanel() {
+	public ListPanel(ActionListener al) {
+		this.al=al;
 		initializeControls();
 		this.setVisible(true);
 	}
 
 	public void initializeControls() {
 
-		this.titles = new String[] { "Kategorie", "Fach", "Beschreibung", "Von", "Bis", "Erledigt" };
+		this.titles = new String[] { "ID","Kategorie", "Fach", "Beschreibung", "Von", "Bis", "Erledigt" };
 
 		this.model = new DefaultTableModel(titles, 0) {
 			@Override
 			public Class getColumnClass(int column) {
 				switch (column) {
 				case 0:
-					return String.class;
+					return Integer.class;
 				case 1:
 					return String.class;
 				case 2:
 					return String.class;
 				case 3:
-					return Date.class;
+					return String.class;
 				case 4:
+					return Date.class;
+				case 5:
 					return Date.class;
 				default:
 					return Boolean.class;
@@ -61,7 +68,7 @@ public class ListPanel extends JPanel {
 			}
 		};
 
-
+		
 		this.table = new JTable(model) {
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
@@ -69,7 +76,7 @@ public class ListPanel extends JPanel {
 			
 				if (!isRowSelected(row)) {
 					if (table.getColumnCount() >= 0) {
-						String status = getModel().getValueAt(row, 5).toString();
+						String status = getModel().getValueAt(row, 6).toString();
 
 						if (status.equalsIgnoreCase("true")) {
 							c.setBackground(Color.GREEN);
@@ -85,7 +92,11 @@ public class ListPanel extends JPanel {
 				return c;
 			}
 		};
-
+		
+		this.table.removeColumn(this.table.getColumnModel().getColumn(0));
+				
+		popup = new MyPopupMenu(this.al);
+		this.table.addMouseListener(new PopupListener(this.popup));
 
 		this.scroll = new JScrollPane(this.table);
 
@@ -100,12 +111,18 @@ public class ListPanel extends JPanel {
 	
 	public void addTask(Task t) {
 		if(this.insert==true) {
-			this.taskArray = new Object[] { t.getKategorie().toString(), t.getFach(), t.getBeschreibung(), t.getVon(),
+			this.taskArray = new Object[] {t.getId(), t.getKategorie().toString(), t.getFach(), t.getBeschreibung(), t.getVon(),
 					t.getBis(), t.getIsDone() };
 			this.model.addRow(this.taskArray);
 		}
 		
 		this.insert=true;
+	}
+	public int getSelectedTaskIDandDeleteRow() {
+		int id =table.getSelectedRow();
+		this.model.removeRow(id);
+		
+		return Integer.parseInt(this.model.getValueAt(id, 0).toString());
 	}
 	
 	public void addListInTable(ArrayList<Task> liste)
@@ -114,7 +131,7 @@ public class ListPanel extends JPanel {
 		
 		for(Task t : liste)
 		{
-			this.taskArray = new Object[] { t.getKategorie().toString(), t.getFach(), t.getBeschreibung(), t.getVon(),
+			this.taskArray = new Object[] {t.getId(), t.getKategorie().toString(), t.getFach(), t.getBeschreibung(), t.getVon(),
 					t.getBis(), t.getIsDone() };
 			this.model.addRow(this.taskArray);
 		}

@@ -71,7 +71,7 @@ public class Mainframe extends JFrame implements ActionListener {
 		btnRefresh = new JButton("Refresh");
 		btnRefresh.setActionCommand("refresh");
 		btnRefresh.addActionListener(this);
-		tasktable = new ListPanel();
+		tasktable = new ListPanel(this);
 
 		lblvon = new JLabel("    Tasks anzeigen vom:  ");
 		lblbis = new JLabel("    bis:  ");
@@ -124,6 +124,8 @@ public class Mainframe extends JFrame implements ActionListener {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+		}else if (e.getActionCommand().equals("ContexteMenuLoeschen")) {
+			DatabaseHelper.deleteData(this.tasktable.getSelectedTaskIDandDeleteRow());
 		}
 	}
 }
