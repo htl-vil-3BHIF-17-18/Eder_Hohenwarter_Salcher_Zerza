@@ -51,6 +51,11 @@ public class ListPanel extends JPanel implements TableModelListener{
 		this.titles = new String[] { "ID","Kategorie", "Fach", "Beschreibung", "Von", "Bis", "Erledigt" };
 
 		this.model = new DefaultTableModel(titles, 0) {
+			  @Override
+		        public boolean isCellEditable(int row, int column)
+		        {
+		            return column == 6;
+		        }
 			@Override
 			public Class getColumnClass(int column) {
 				switch (column) {
