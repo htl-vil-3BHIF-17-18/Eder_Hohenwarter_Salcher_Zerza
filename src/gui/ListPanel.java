@@ -8,7 +8,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Console;
 import java.sql.RowId;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
@@ -119,7 +122,7 @@ public class ListPanel extends JPanel implements TableModelListener{
 		this.insert=insert;
 	}
 	
-	public void addTask(Task t) {
+	public void addTask(Task t) throws ParseException {
 		if(this.insert==true) {
 			this.taskArray = new Object[] {t.getId(), t.getKategorie().toString(), t.getFach(), t.getBeschreibung(), t.getVon(),
 					t.getBis(), t.getIsDone() };

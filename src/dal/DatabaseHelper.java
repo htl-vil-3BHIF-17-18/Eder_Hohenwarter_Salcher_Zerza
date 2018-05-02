@@ -11,7 +11,6 @@ import gui.ListPanel;
 
 public class DatabaseHelper {
 	public static ArrayList<Task> loadData(String sortKategorie, java.util.Date von, java.util.Date bis) {
-		SimpleDateFormat sdf=new SimpleDateFormat("DD.MM.YYYY");
 		Connection con = null;
 		Statement stmt_Select = null;
 		ResultSet rs = null;
@@ -22,16 +21,14 @@ public class DatabaseHelper {
 
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			con = DriverManager.getConnection("jdbc:oracle:thin:d3b06/d3b@212.152.179.117:1521:ora11g");
+			con = DriverManager.getConnection("jdbc:oracle:thin:d3b04/d3b@212.152.179.117:1521:ora11g");
 			stmt_Select = con.createStatement();
-			
-			System.out.println(von.toLocaleString().split(" ")[0]);
 			
 			if(sortKategorie=="Alles")
 			{
 				rs = stmt_Select.executeQuery("SELECT * FROM Tasks WHERE von >= TO_DATE('" + von.toLocaleString().split(" ")[0] + "', 'dd.mm.yyyy') AND bis <= TO_DATE('" + bis.toLocaleString().split(" ")[0] + "', 'dd.mm.yyyy')");
 			}else {
-				rs = stmt_Select.executeQuery("SELECT * FROM Tasks WHERE kategorie LIKE " + sortKategorie + " AND TO_CHAR(von,'DD.MM.YYYY') > '" + sdf.format(von) + "' AND TO_CHAR(bis,'DD.MM.YYYY') < '" + sdf.format(bis) +"'" );
+				rs = stmt_Select.executeQuery("SELECT * FROM Tasks WHERE kategorie LIKE '" + sortKategorie + "' AND von > TO_DATE('" + von.toLocaleString().split(" ")[0] + "', 'dd.mm.yyyy') AND bis < TO_DATE('" + bis.toLocaleString().split(" ")[0] + "', 'dd.mm.yyyy')" );
 			}
 
 			while (rs.next()) {
@@ -56,7 +53,6 @@ public class DatabaseHelper {
 					k=Kategorie.Mitarbeitskontrolle;
 				}else if(kategorie.contains("GLF"))
 				{
-					System.out.println("stimmt");
 					k=Kategorie.GLF;
 				}
 				
@@ -67,8 +63,8 @@ public class DatabaseHelper {
 				else if(rs.getString(7).contains("false")) {
 					task = new Task(k, rs.getString(3), rs.getString(4), von, bis, false);
 				}
+				
 				task.setId(rs.getInt(1));
-				System.out.println(task.toString());
 				taskarray.add(task);
 			}
 		} catch (ClassNotFoundException e) {
@@ -96,10 +92,8 @@ public class DatabaseHelper {
 
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			con = DriverManager.getConnection("jdbc:oracle:thin:d3b06/d3b@212.152.179.117:1521:ora11g");
+			con = DriverManager.getConnection("jdbc:oracle:thin:d3b04/d3b@212.152.179.117:1521:ora11g");
 			stmt_Insert = con.createStatement();
-			System.out.println(sdf.format(task.getVon()).toString());
-			System.out.println(sdf.format(task.getBis()).toString());
 			
 			stmt_Insert.executeQuery("INSERT INTO Tasks Values(seqTasks.NEXTVAL, '" + task.getKategorie().toString() + "', '" + task.getFach() + "', '" + task.getBeschreibung() + "', TO_DATE('" + sdf.format(task.getVon()).toString() + "'), TO_DATE('" + sdf.format(task.getBis()).toString() + "'), '" + task.getIsDone() + "')");
 		} catch (ClassNotFoundException e) {
@@ -125,7 +119,7 @@ public class DatabaseHelper {
 
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			con = DriverManager.getConnection("jdbc:oracle:thin:d3b06/d3b@212.152.179.117:1521:ora11g");
+			con = DriverManager.getConnection("jdbc:oracle:thin:d3b04/d3b@212.152.179.117:1521:ora11g");
 			stmt_Delete = con.createStatement();		
 			
 			stmt_Delete.executeQuery("DELETE FROM Tasks WHERE id=" + id);	
@@ -149,7 +143,7 @@ public class DatabaseHelper {
 
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			con = DriverManager.getConnection("jdbc:oracle:thin:d3b06/d3b@212.152.179.117:1521:ora11g");
+			con = DriverManager.getConnection("jdbc:oracle:thin:d3b04/d3b@212.152.179.117:1521:ora11g");
 			stmt_Update = con.createStatement();		
 			
 			if(isDone==true) {

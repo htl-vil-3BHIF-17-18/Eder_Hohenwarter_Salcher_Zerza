@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import bll.Kategorie;
 import bll.Task;
 import dal.DatabaseHelper;
+import sun.invoke.empty.Empty;
 
 public class Mainframe extends JFrame implements ActionListener {
 
@@ -102,17 +103,20 @@ public class Mainframe extends JFrame implements ActionListener {
 				e1.printStackTrace();
 			}
 		} else if (e.getActionCommand().equals("refresh")) {
-			System.out.println("hey");
 			this.tasktable.deleteTable();
-			System.out.println("hallo");
-			try {
-				System.out.println("");
-				this.tasktable.addListInTable(DatabaseHelper.loadData(this.kategorieauswahl.getSelectedItem().toString(), dateFormat.parse(this.txtvon.getText()), dateFormat.parse(this.txtbis.getText())));
-			} catch (ParseException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+
+			if (this.txtvon.getText().toString() != null && this.txtbis.getText().toString() != null) {
+				try {
+					this.tasktable.addListInTable(DatabaseHelper.loadData(this.kategorieauswahl.getSelectedItem().toString(),dateFormat.parse(this.txtvon.getText()), dateFormat.parse(this.txtbis.getText())));
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			} else {
+				System.out.println("hallo");
 			}
-		}else if (e.getActionCommand().equals("ContexteMenuLoeschen")) {
+
+		} else if (e.getActionCommand().equals("ContexteMenuLoeschen")) {
 			DatabaseHelper.deleteData(this.tasktable.getSelectedTaskIDandDeleteRow());
 		}
 	}
