@@ -101,8 +101,8 @@ public class Taskdialog extends JPanel{
 	public void setTask(Task selectedTask) {
 		this.txtBeschreibung.setText(selectedTask.getBeschreibung());
 		this.txtFach.setText(selectedTask.getFach());
-		this.txtVon.setText(selectedTask.getVon().toString());
-		this.txtBis.setText(selectedTask.getBis().toString());
+		this.txtVon.setText(selectedTask.getVon().toLocaleString().split(" ")[0]);
+		this.txtBis.setText(selectedTask.getBis().toLocaleString().split(" ")[0]);
 		
 		this.cbKategorie.setSelectedItem(selectedTask.getKategorie());
 	}

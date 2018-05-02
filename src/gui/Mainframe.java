@@ -122,16 +122,16 @@ public class Mainframe extends JFrame implements ActionListener {
 		} else if (e.getActionCommand().equals("ContexteMenuLoeschen")) {
 			DatabaseHelper.deleteData(this.tasktable.getSelectedTaskIDandDeleteRow());
 		} else if (e.getActionCommand().equals("ContexteMenuAendern")) {
-			// Update methode in Databasehelper der alles Ändert
-			this.taskdialog.setTask(this.tasktable.getSelectedTask());
-			this.taskdialog.enableAendernButton(true);
-
+			if(this.tasktable.getSelectedTask()!=null) {
+				this.taskdialog.setTask(this.tasktable.getSelectedTask());
+				this.taskdialog.enableAendernButton(true);
+			}
 		} else if (e.getActionCommand().equals("btnAendern")) {
 			try {
 				if (this.taskdialog.getEingabeTask() != null) {
 					this.tasktable.getSelectedTaskIDandDeleteRow();
-					// DatabaseHelper.saveData(this.taskdialog.getEingabeTask(), this.tasktable);
-
+					//DatabaseHelper.saveData(this.taskdialog.getEingabeTask(), this.tasktable);
+					DatabaseHelper.updateChangedData(this.taskdialog.getEingabeTask());
 					this.tasktable.addTask((this.taskdialog.getEingabeTask()));
 					this.taskdialog.enableAendernButton(false);
 					this.taskdialog.makeClear();

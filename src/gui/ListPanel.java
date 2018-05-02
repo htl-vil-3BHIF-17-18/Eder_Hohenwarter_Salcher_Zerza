@@ -189,5 +189,4 @@ public class ListPanel extends JPanel implements TableModelListener{
 		}
 		
 	}
-
 }
