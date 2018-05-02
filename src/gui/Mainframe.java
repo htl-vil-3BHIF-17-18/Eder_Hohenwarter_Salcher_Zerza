@@ -118,21 +118,22 @@ public class Mainframe extends JFrame implements ActionListener {
 				this.tasktable.addListInTable(
 						DatabaseHelper.loadDataNoDate(this.kategorieauswahl.getSelectedItem().toString()));
 			}
-
+			
+			this.txtvon.setText("");
+			this.txtbis.setText("");
 		} else if (e.getActionCommand().equals("ContexteMenuLoeschen")) {
 			DatabaseHelper.deleteData(this.tasktable.getSelectedTaskIDandDeleteRow());
 		} else if (e.getActionCommand().equals("ContexteMenuAendern")) {
-			if(this.tasktable.getSelectedTask()!=null) {
-				this.taskdialog.setTask(this.tasktable.getSelectedTask());
-				this.taskdialog.enableAendernButton(true);
-			}
+			this.taskdialog.setTask(this.tasktable.getSelectedTask());
+			this.taskdialog.enableAendernButton(true);
+
 		} else if (e.getActionCommand().equals("btnAendern")) {
 			try {
 				if (this.taskdialog.getEingabeTask() != null) {
-					this.tasktable.getSelectedTaskIDandDeleteRow();
-					//DatabaseHelper.saveData(this.taskdialog.getEingabeTask(), this.tasktable);
-					DatabaseHelper.updateChangedData(this.taskdialog.getEingabeTask());
-					this.tasktable.addTask((this.taskdialog.getEingabeTask()));
+					DatabaseHelper.updateChangedData(this.taskdialog.getEingabeTask(), this.tasktable.getSelectedTask().getId());
+					System.out.println(this.tasktable.getSelectedTask().getId());
+					this.tasktable.setChangedValue(this.taskdialog.getEingabeTask());
+					this.tasktable.repaint();
 					this.taskdialog.enableAendernButton(false);
 					this.taskdialog.makeClear();
 				}

@@ -168,19 +168,17 @@ public class DatabaseHelper {
 		}
 	}
 	
-	public static void updateChangedData(Task task) {
+	public static void updateChangedData(Task task, int id) {
 		Connection con = null;
 		Statement stmt_Update = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.mm.yyyy");
-		int taskid=task.getId() + 1;
 
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			con = DriverManager.getConnection("jdbc:oracle:thin:d3b04/d3b@212.152.179.117:1521:ora11g");
 			stmt_Update = con.createStatement();
-			
-			
-			stmt_Update.executeQuery("UPDATE Tasks SET kategorie='" + task.getKategorie().toString() + "', fach='" + task.getFach() + "', beschreibung='" + task.getBeschreibung() + "', von='" + sdf.format(task.getVon()).toString() + "', bis='" + sdf.format(task.getBis()).toString() + "' WHERE id=" + taskid  + "");
+			 
+			stmt_Update.executeQuery("UPDATE Tasks SET kategorie='" + task.getKategorie().toString() + "', fach='" + task.getFach() + "', beschreibung='" + task.getBeschreibung() + "', von='" + sdf.format(task.getVon()).toString() + "', bis='" + sdf.format(task.getBis()).toString() + "' WHERE id=" + id  + "");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e1) {
