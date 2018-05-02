@@ -10,6 +10,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Console;
 import java.sql.RowId;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import javax.swing.table.TableColumnModel;
 import bll.Kategorie;
 import bll.Task;
 import dal.DatabaseHelper;
+import javafx.scene.input.DataFormat;
 
 public class ListPanel extends JPanel implements TableModelListener{
 
@@ -43,7 +45,8 @@ public class ListPanel extends JPanel implements TableModelListener{
 	private boolean insert=true;
 	private MyPopupMenu popup=null;
 	private ActionListener al=null;
-
+	private DateFormat dateFormat = new SimpleDateFormat("dd.mm.yyyy");
+	
 	public ListPanel(ActionListener al) {
 		this.al=al;
 		initializeControls();
@@ -144,18 +147,16 @@ public class ListPanel extends JPanel implements TableModelListener{
 		
 		int id= Integer.parseInt(this.model.getValueAt(row, 0).toString());
 		
-		
-		Kategorie kategorie=(Kategorie) this.model.getValueAt(row, 1);
-		
-		
+		Kategorie kategorie=Kategorie.valueOf(this.model.getValueAt(row, 1).toString());
 		
 		String fach=(String) this.model.getValueAt(row,2);
 		String beschreibung = (String) this.model.getValueAt(row,3);
 		Date von=(Date) this.model.getValueAt(row,4);
 		Date bis=(Date) this.model.getValueAt(row,5);
+		
 		Boolean isDone=(Boolean) this.model.getValueAt(row,6);
 		
-		Task t=new Task(kategorie, fach, beschreibung, bis, bis, isDone);
+		Task t=new Task(kategorie, fach, beschreibung, von, bis, isDone);
 		t.setId(id);
 		
 		return t;

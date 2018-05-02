@@ -35,6 +35,7 @@ public class Taskdialog extends JPanel{
 	private JTextField txtFach = null;
 	private JTextField txtBeschreibung = null;
 	
+	
 	private ActionListener al=null;
 	private DateFormat dateFormat = new SimpleDateFormat("dd.mm.yyyy");
 	
@@ -104,5 +105,17 @@ public class Taskdialog extends JPanel{
 		this.txtBis.setText(selectedTask.getBis().toString());
 		
 		this.cbKategorie.setSelectedItem(selectedTask.getKategorie());
+	}
+	public void enableAendernButton(Boolean bool) {
+		this.btnAendern.setEnabled(bool);
+		this.btnAdd.setEnabled(!bool);
+	}
+	public void makeClear() {
+		this.txtBeschreibung.setText("");
+		this.txtBis.setText("");
+		this.txtVon.setText("");
+		this.txtFach.setText("");
+		this.cbKategorie.setSelectedIndex(0);
+		
 	}
 }

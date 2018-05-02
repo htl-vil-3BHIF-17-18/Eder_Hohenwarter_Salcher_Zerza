@@ -105,24 +105,41 @@ public class Mainframe extends JFrame implements ActionListener {
 		} else if (e.getActionCommand().equals("refresh")) {
 			this.tasktable.deleteTable();
 
-			if (!this.txtvon.getText().isEmpty()  && !this.txtbis.getText().isEmpty()) {
+			if (!this.txtvon.getText().isEmpty() && !this.txtbis.getText().isEmpty()) {
 				try {
-					this.tasktable.addListInTable(DatabaseHelper.loadData(this.kategorieauswahl.getSelectedItem().toString(),dateFormat.parse(this.txtvon.getText()), dateFormat.parse(this.txtbis.getText())));
+					this.tasktable
+							.addListInTable(DatabaseHelper.loadData(this.kategorieauswahl.getSelectedItem().toString(),
+									dateFormat.parse(this.txtvon.getText()), dateFormat.parse(this.txtbis.getText())));
 				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			} else {
-				this.tasktable.addListInTable(DatabaseHelper.loadDataNoDate(this.kategorieauswahl.getSelectedItem().toString()));
+				this.tasktable.addListInTable(
+						DatabaseHelper.loadDataNoDate(this.kategorieauswahl.getSelectedItem().toString()));
 			}
 
 		} else if (e.getActionCommand().equals("ContexteMenuLoeschen")) {
 			DatabaseHelper.deleteData(this.tasktable.getSelectedTaskIDandDeleteRow());
-		}else if (e.getActionCommand().equals("ContexteMenuAendern")) {
-			//Update methode in Databasehelper der alles Ändert 
+		} else if (e.getActionCommand().equals("ContexteMenuAendern")) {
+			// Update methode in Databasehelper der alles Ändert
 			this.taskdialog.setTask(this.tasktable.getSelectedTask());
-			
-			
+			this.taskdialog.enableAendernButton(true);
+
+		} else if (e.getActionCommand().equals("btnAendern")) {
+			try {
+				if (this.taskdialog.getEingabeTask() != null) {
+					this.tasktable.getSelectedTaskIDandDeleteRow();
+					// DatabaseHelper.saveData(this.taskdialog.getEingabeTask(), this.tasktable);
+
+					this.tasktable.addTask((this.taskdialog.getEingabeTask()));
+					this.taskdialog.enableAendernButton(false);
+					this.taskdialog.makeClear();
+				}
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 }
