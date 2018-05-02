@@ -105,7 +105,7 @@ public class Mainframe extends JFrame implements ActionListener {
 		} else if (e.getActionCommand().equals("refresh")) {
 			this.tasktable.deleteTable();
 
-			if (this.txtvon.getText().toString() != null && this.txtbis.getText().toString() != null) {
+			if (!this.txtvon.getText().isEmpty()  && !this.txtbis.getText().isEmpty()) {
 				try {
 					this.tasktable.addListInTable(DatabaseHelper.loadData(this.kategorieauswahl.getSelectedItem().toString(),dateFormat.parse(this.txtvon.getText()), dateFormat.parse(this.txtbis.getText())));
 				} catch (ParseException e1) {
@@ -113,7 +113,7 @@ public class Mainframe extends JFrame implements ActionListener {
 					e1.printStackTrace();
 				}
 			} else {
-				System.out.println("hallo");
+				this.tasktable.addListInTable(DatabaseHelper.loadDataNoDate(this.kategorieauswahl.getSelectedItem().toString()));
 			}
 
 		} else if (e.getActionCommand().equals("ContexteMenuLoeschen")) {
