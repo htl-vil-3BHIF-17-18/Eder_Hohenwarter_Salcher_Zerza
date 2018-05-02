@@ -9,6 +9,9 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.RowId;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
@@ -29,33 +32,37 @@ import javax.swing.table.TableColumnModel;
 import bll.Task;
 import dal.DatabaseHelper;
 
-public class ListPanel extends JPanel implements TableModelListener{
+public class ListPanel extends JPanel implements TableModelListener {
 
 	private String[] titles = null;
 	private DefaultTableModel model = null;
 	private JScrollPane scroll = null;
 	private JTable table = null;
 	private Object[] taskArray = null;
-	private boolean insert=true;
-	private MyPopupMenu popup=null;
-	private ActionListener al=null;
-
+	private boolean insert = true;
+	private MyPopupMenu popup = null;
+	private ActionListener al = null;
+	
+	private DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+	Date date = new Date();
+	
+	
 	public ListPanel(ActionListener al) {
-		this.al=al;
+		this.al = al;
 		initializeControls();
 		this.setVisible(true);
 	}
 
 	public void initializeControls() {
 
-		this.titles = new String[] { "ID","Kategorie", "Fach", "Beschreibung", "Von", "Bis", "Erledigt" };
+		this.titles = new String[] { "ID", "Kategorie", "Fach", "Beschreibung", "Von", "Bis", "Erledigt" };
 
 		this.model = new DefaultTableModel(titles, 0) {
-			  @Override
-		        public boolean isCellEditable(int row, int column)
-		        {
-		            return column == 6;
-		        }
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return column == 6;
+			}
+
 			@Override
 			public Class getColumnClass(int column) {
 				switch (column) {
@@ -77,34 +84,41 @@ public class ListPanel extends JPanel implements TableModelListener{
 			}
 		};
 
-		
 		this.table = new JTable(model) {
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
-			
+
 				if (!isRowSelected(row)) {
 					if (table.getColumnCount() >= 0) {
 						String status = getModel().getValueAt(row, 6).toString();
+						try {
+							Date bisDatum = dateFormat.parse(getModel().getValueAt(row, 5).toString());
+						
 
 						if (status.equalsIgnoreCase("true")) {
 							c.setBackground(Color.GREEN);
 						}
-						if (status.equalsIgnoreCase("false")) {
+						if (status.equalsIgnoreCase("false")&&date.before(bisDatum)) {
+							c.setBackground(Color.ORANGE);
+						}
+						else {
 							c.setBackground(Color.RED);
 						}
-
+						
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
-				} else {
-					c.setBackground(table.getBackground());
 				}
 				return c;
 			}
 		};
-		
+
 		table.getColumnModel().removeColumn(table.getColumnModel().getColumn(0));
 		table.getModel().addTableModelListener(this);
-				
+
 		popup = new MyPopupMenu(this.al);
 		this.table.addMouseListener(new PopupListener(this.popup));
 
@@ -116,32 +130,31 @@ public class ListPanel extends JPanel implements TableModelListener{
 	}
 
 	public void setInsert(boolean insert) {
-		this.insert=insert;
+		this.insert = insert;
 	}
-	
+
 	public void addTask(Task t) {
-		if(this.insert==true) {
-			this.taskArray = new Object[] {t.getId(), t.getKategorie().toString(), t.getFach(), t.getBeschreibung(), t.getVon(),
-					t.getBis(), t.getIsDone() };
+		if (this.insert == true) {
+			this.taskArray = new Object[] { t.getId(), t.getKategorie().toString(), t.getFach(), t.getBeschreibung(),
+					t.getVon(), t.getBis(), t.getIsDone() };
 			this.model.addRow(this.taskArray);
 		}
-		
-		this.insert=true;
+
+		this.insert = true;
 	}
+
 	public int getSelectedTaskIDandDeleteRow() {
-		int id =table.getSelectedRow();
-		int rgw=Integer.parseInt(this.model.getValueAt(id, 0).toString());
-		
+		int id = table.getSelectedRow();
+		int rgw = Integer.parseInt(this.model.getValueAt(id, 0).toString());
+
 		this.model.removeRow(id);
 		return rgw;
 	}
-	
-	public void addListInTable(ArrayList<Task> liste)
-	{
-		for(Task t : liste)
-		{
-			this.taskArray = new Object[] {t.getId(), t.getKategorie().toString(), t.getFach(), t.getBeschreibung(), t.getVon(),
-					t.getBis(), t.getIsDone() };
+
+	public void addListInTable(ArrayList<Task> liste) {
+		for (Task t : liste) {
+			this.taskArray = new Object[] { t.getId(), t.getKategorie().toString(), t.getFach(), t.getBeschreibung(),
+					t.getVon(), t.getBis(), t.getIsDone() };
 			this.model.addRow(this.taskArray);
 		}
 	}
@@ -149,19 +162,18 @@ public class ListPanel extends JPanel implements TableModelListener{
 	public void deleteTable() {
 		int rowCount = this.model.getRowCount();
 		for (int i = rowCount - 1; i >= 0; i--) {
-		    this.model.removeRow(i);
+			this.model.removeRow(i);
 		}
 	}
 
 	@Override
 	public void tableChanged(TableModelEvent e) {
 
-		if(e.getColumn()==6)
-		{
-			int row=e.getFirstRow();
-			DatabaseHelper.updateData((Integer) this.model.getValueAt(row, 0),(Boolean) this.model.getValueAt(row, 6));
+		if (e.getColumn() == 6) {
+			int row = e.getFirstRow();
+			DatabaseHelper.updateData((Integer) this.model.getValueAt(row, 0), (Boolean) this.model.getValueAt(row, 6));
 		}
-		
+
 	}
 
 }
