@@ -11,15 +11,23 @@ import javax.swing.JPopupMenu;
 public class MyPopupMenu extends JPopupMenu {
 
 	JMenuItem menuItemLoeschen = null;
+	JMenuItem menuItemAendern = null;
 	ActionListener listener = null;
 
 	public MyPopupMenu(ActionListener listener) {
 
 		this.listener = listener;
+
 		menuItemLoeschen = new JMenuItem("Löschen");
 		menuItemLoeschen.setActionCommand("ContexteMenuLoeschen");
 		menuItemLoeschen.addActionListener(this.listener);
+
+		menuItemAendern = new JMenuItem("Ändern");
+		menuItemAendern.setActionCommand("ContexteMenuAendern");
+		menuItemAendern.addActionListener(this.listener);
+
 		this.add(menuItemLoeschen);
+		this.add(menuItemAendern);
 
 	}
 

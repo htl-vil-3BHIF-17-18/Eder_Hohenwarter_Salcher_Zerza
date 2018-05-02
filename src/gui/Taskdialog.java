@@ -28,6 +28,7 @@ public class Taskdialog extends JPanel{
 	private JButton btnAdd = null;
 	//Test for Push please delete
 	private JComboBox  cbKategorie= null;
+	private JButton btnAendern=null;
 	private Kategorie[] cbKategorienListe = {Kategorie.GLF,Kategorie.Mitarbeitskontrolle,Kategorie.Hausübung,Kategorie.PLF,Kategorie.Schularbeit,Kategorie.Schulübung};
 	private JFormattedTextField txtVon = null;
 	private JFormattedTextField txtBis = null;
@@ -57,9 +58,15 @@ public class Taskdialog extends JPanel{
 		lblFach = new JLabel("Fach :");
 		lblBeschreibung = new JLabel("Beschreibung :");
 		btnAdd = new JButton("Add");
+		btnAendern=new JButton("Ändern");
+		
+		btnAendern.addActionListener(al);
+		btnAendern.setActionCommand("btnAendern");
+		btnAendern.setEnabled(false);
 		
 		btnAdd.addActionListener(al);
 		btnAdd.setActionCommand("btnAdd");
+		
 		
 		cbKategorie = new JComboBox(cbKategorienListe);
 		txtVon = new JFormattedTextField(dateFormat);
@@ -78,6 +85,7 @@ public class Taskdialog extends JPanel{
 		this.add(lblBeschreibung);
 		this.add(txtBeschreibung);
 		this.add(btnAdd);
+		this.add(btnAendern);
 		
 	}
 	public Task getEingabeTask() throws ParseException {
@@ -88,5 +96,13 @@ public class Taskdialog extends JPanel{
 			t=new Task((Kategorie) cbKategorie.getSelectedItem(),this.txtFach.getText(),this.txtBeschreibung.getText(),dateFormat.parse(this.txtVon.getText()),dateFormat.parse(this.txtBis.getText()),false);
 		}
 		return t;
+	}
+	public void setTask(Task selectedTask) {
+		this.txtBeschreibung.setText(selectedTask.getBeschreibung());
+		this.txtFach.setText(selectedTask.getFach());
+		this.txtVon.setText(selectedTask.getVon().toString());
+		this.txtBis.setText(selectedTask.getBis().toString());
+		
+		this.cbKategorie.setSelectedItem(selectedTask.getKategorie());
 	}
 }

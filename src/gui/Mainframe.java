@@ -118,6 +118,11 @@ public class Mainframe extends JFrame implements ActionListener {
 
 		} else if (e.getActionCommand().equals("ContexteMenuLoeschen")) {
 			DatabaseHelper.deleteData(this.tasktable.getSelectedTaskIDandDeleteRow());
+		}else if (e.getActionCommand().equals("ContexteMenuAendern")) {
+			//Update methode in Databasehelper der alles Ändert 
+			this.taskdialog.setTask(this.tasktable.getSelectedTask());
+			
+			
 		}
 	}
 }

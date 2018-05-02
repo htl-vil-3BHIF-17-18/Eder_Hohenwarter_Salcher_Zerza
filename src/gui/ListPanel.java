@@ -29,6 +29,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
+import bll.Kategorie;
 import bll.Task;
 import dal.DatabaseHelper;
 
@@ -138,7 +139,28 @@ public class ListPanel extends JPanel implements TableModelListener{
 		this.model.removeRow(id);
 		return rgw;
 	}
-	
+	public Task getSelectedTask() {
+		int row= table.getSelectedRow();
+		
+		int id= Integer.parseInt(this.model.getValueAt(row, 0).toString());
+		
+		
+		Kategorie kategorie=(Kategorie) this.model.getValueAt(row, 1);
+		
+		
+		
+		String fach=(String) this.model.getValueAt(row,2);
+		String beschreibung = (String) this.model.getValueAt(row,3);
+		Date von=(Date) this.model.getValueAt(row,4);
+		Date bis=(Date) this.model.getValueAt(row,5);
+		Boolean isDone=(Boolean) this.model.getValueAt(row,6);
+		
+		Task t=new Task(kategorie, fach, beschreibung, bis, bis, isDone);
+		t.setId(id);
+		
+		return t;
+		
+	}
 	public void addListInTable(ArrayList<Task> liste)
 	{
 		for(Task t : liste)
