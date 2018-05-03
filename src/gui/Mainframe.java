@@ -4,6 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,6 +19,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import bll.Kategorie;
@@ -93,53 +98,95 @@ public class Mainframe extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("btnAdd")) {
-			try {
-				if (this.taskdialog.getEingabeTask() != null) {
-					DatabaseHelper.saveData(this.taskdialog.getEingabeTask(), this.tasktable);
-					this.tasktable.addTask((this.taskdialog.getEingabeTask()));
-				}
-			} catch (ParseException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		} else if (e.getActionCommand().equals("refresh")) {
-			this.tasktable.deleteTable();
-
-			if (!this.txtvon.getText().isEmpty() && !this.txtbis.getText().isEmpty()) {
+			if (netIsAvailable()) {
 				try {
-					this.tasktable
-							.addListInTable(DatabaseHelper.loadData(this.kategorieauswahl.getSelectedItem().toString(),
-									dateFormat.parse(this.txtvon.getText()), dateFormat.parse(this.txtbis.getText())));
+					if (this.taskdialog.getEingabeTask() != null) {
+						DatabaseHelper.saveData(this.taskdialog.getEingabeTask(), this.tasktable);
+						this.tasktable.addTask((this.taskdialog.getEingabeTask()));
+					}
 				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			} else {
-				this.tasktable.addListInTable(
-						DatabaseHelper.loadDataNoDate(this.kategorieauswahl.getSelectedItem().toString()));
+				infoBox("Keine Verbindung zur Datenbank!", "Internetverbindung");
 			}
-			
-			this.txtvon.setText("");
-			this.txtbis.setText("");
+
+		} else if (e.getActionCommand().equals("refresh")) {
+			if (netIsAvailable()) {
+				this.tasktable.deleteTable();
+
+				if (!this.txtvon.getText().isEmpty() && !this.txtbis.getText().isEmpty()) {
+					try {
+						this.tasktable.addListInTable(DatabaseHelper.loadData(
+								this.kategorieauswahl.getSelectedItem().toString(),
+								dateFormat.parse(this.txtvon.getText()), dateFormat.parse(this.txtbis.getText())));
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else {
+					this.tasktable.addListInTable(
+							DatabaseHelper.loadDataNoDate(this.kategorieauswahl.getSelectedItem().toString()));
+				}
+
+				this.txtvon.setText("");
+				this.txtbis.setText("");
+			} else {
+				infoBox("Keine Verbindung zur Datenbank!", "Internetverbindung");
+			}
 		} else if (e.getActionCommand().equals("ContexteMenuLoeschen")) {
-			DatabaseHelper.deleteData(this.tasktable.getSelectedTaskIDandDeleteRow());
+			if (netIsAvailable()) {
+				DatabaseHelper.deleteData(this.tasktable.getSelectedTaskIDandDeleteRow());
+			} else {
+				infoBox("Keine Verbindung zur Datenbank!", "Internetverbindung");
+			}
 		} else if (e.getActionCommand().equals("ContexteMenuAendern")) {
-			this.taskdialog.setTask(this.tasktable.getSelectedTask());
-			this.taskdialog.enableAendernButton(true);
+			if (netIsAvailable()) {
+				this.taskdialog.setTask(this.tasktable.getSelectedTask());
+				this.taskdialog.enableAendernButton(true);
+			} else {
+				infoBox("Keine Verbindung zur Datenbank!", "Internetverbindung");
+			}
 
 		} else if (e.getActionCommand().equals("btnAendern")) {
-			try {
-				if (this.taskdialog.getEingabeTask() != null) {
-					DatabaseHelper.updateChangedData(this.taskdialog.getEingabeTask(), this.tasktable.getSelectedTask().getId());
-					this.tasktable.setChangedValue(this.taskdialog.getEingabeTask());
-					this.tasktable.repaint();
-					this.taskdialog.enableAendernButton(false);
-					this.taskdialog.makeClear();
+			if (netIsAvailable()) {
+				try {
+					if (this.taskdialog.getEingabeTask() != null) {
+						DatabaseHelper.updateChangedData(this.taskdialog.getEingabeTask(),
+								this.tasktable.getSelectedTask().getId());
+						this.tasktable.setChangedValue(this.taskdialog.getEingabeTask());
+						this.tasktable.repaint();
+						this.taskdialog.enableAendernButton(false);
+						this.taskdialog.makeClear();
+					}
+				} catch (ParseException e1) {
+
+					e1.printStackTrace();
 				}
-			} catch (ParseException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			} else {
+				infoBox("Keine Verbindung zur Datenbank!", "Internetverbindung");
 			}
+
 		}
 	}
+
+	public void infoBox(String infoMessage, String titleBar) {
+		JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	private boolean netIsAvailable() {
+		try {
+			final URL url = new URL("http://www.google.com");
+			final URLConnection conn = url.openConnection();
+			conn.connect();
+			conn.getInputStream().close();
+			return true;
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			return false;
+		}
+	}
+
 }
