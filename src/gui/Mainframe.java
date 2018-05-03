@@ -131,7 +131,6 @@ public class Mainframe extends JFrame implements ActionListener {
 			try {
 				if (this.taskdialog.getEingabeTask() != null) {
 					DatabaseHelper.updateChangedData(this.taskdialog.getEingabeTask(), this.tasktable.getSelectedTask().getId());
-					System.out.println(this.tasktable.getSelectedTask().getId());
 					this.tasktable.setChangedValue(this.taskdialog.getEingabeTask());
 					this.tasktable.repaint();
 					this.taskdialog.enableAendernButton(false);
