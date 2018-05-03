@@ -165,7 +165,7 @@ public class Mainframe extends JFrame implements ActionListener {
 					e1.printStackTrace();
 				}
 			} else {
-				infoBox("Keine Verbindung zur Datenbank!", "Internetverbindung");
+				infoBox("Keine Verbindung zum INTERRRNET!", "Internetverbindung");
 			}
 
 		}
