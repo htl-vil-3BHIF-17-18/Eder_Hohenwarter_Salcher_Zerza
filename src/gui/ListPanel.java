@@ -35,20 +35,21 @@ import bll.Task;
 import dal.DatabaseHelper;
 import javafx.scene.input.DataFormat;
 
-public class ListPanel extends JPanel implements TableModelListener{
+public class ListPanel extends JPanel implements TableModelListener {
 
 	private String[] titles = null;
 	private DefaultTableModel model = null;
 	private JScrollPane scroll = null;
 	private JTable table = null;
 	private Object[] taskArray = null;
-	private boolean insert=true;
-	private MyPopupMenu popup=null;
-	private ActionListener al=null;
+	private boolean insert = true;
+	private MyPopupMenu popup = null;
+	private ActionListener al = null;
 	private DateFormat dateFormat = new SimpleDateFormat("dd.mm.yyyy");
-	
+	Date today = new Date();
+
 	public ListPanel(ActionListener al) {
-		this.al=al;
+		this.al = al;
 		initializeControls();
 		this.setVisible(true);
 	}
@@ -93,11 +94,15 @@ public class ListPanel extends JPanel implements TableModelListener{
 				if (!isRowSelected(row)) {
 					if (table.getColumnCount() >= 0) {
 						String status = getModel().getValueAt(row, 6).toString();
-
+						Date bis=(Date) getModel().getValueAt(row, 5);
+						
 						if (status.equalsIgnoreCase("true")) {
 							c.setBackground(Color.GREEN);
 						}
-						if (status.equalsIgnoreCase("false")) {
+						if (status.equalsIgnoreCase("false")&& bis.after(today)) {
+							c.setBackground(Color.ORANGE);
+						}
+						if (status.equalsIgnoreCase("false")&& bis.before(today)) {
 							c.setBackground(Color.RED);
 						}
 
@@ -123,63 +128,61 @@ public class ListPanel extends JPanel implements TableModelListener{
 	}
 
 	public void setInsert(boolean insert) {
-		this.insert=insert;
+		this.insert = insert;
 	}
-	
+
 	public void addTask(Task t) throws ParseException {
-		if(this.insert==true) {
-			this.taskArray = new Object[] {t.getId(), t.getKategorie().toString(), t.getFach(), t.getBeschreibung(), t.getVon(),
-					t.getBis(), t.getIsDone() };
+		if (this.insert == true) {
+			this.taskArray = new Object[] { t.getId(), t.getKategorie().toString(), t.getFach(), t.getBeschreibung(),
+					t.getVon(), t.getBis(), t.getIsDone() };
 			this.model.addRow(this.taskArray);
 		}
-		
-		this.insert=true;
+
+		this.insert = true;
 	}
-	
+
 	public int getSelectedTaskIDandDeleteRow() {
-		int id =table.getSelectedRow();
-		int rgw=Integer.parseInt(this.model.getValueAt(id, 0).toString());
-		
+		int id = table.getSelectedRow();
+		int rgw = Integer.parseInt(this.model.getValueAt(id, 0).toString());
+
 		this.model.removeRow(id);
 		return rgw;
 	}
-	
+
 	public Task getSelectedTask() {
-		int row= table.getSelectedRow();
-		
-		int id= Integer.parseInt(this.model.getValueAt(row, 0).toString());
-		
-		Kategorie kategorie=Kategorie.valueOf(this.model.getValueAt(row, 1).toString());
-		
-		String fach=(String) this.model.getValueAt(row,2);
-		String beschreibung = (String) this.model.getValueAt(row,3);
-		Date von=(Date) this.model.getValueAt(row,4);
-		Date bis=(Date) this.model.getValueAt(row,5);
-		
-		Boolean isDone=(Boolean) this.model.getValueAt(row,6);
-		
-		Task t=new Task(kategorie, fach, beschreibung, von, bis, isDone);
+		int row = table.getSelectedRow();
+
+		int id = Integer.parseInt(this.model.getValueAt(row, 0).toString());
+
+		Kategorie kategorie = Kategorie.valueOf(this.model.getValueAt(row, 1).toString());
+
+		String fach = (String) this.model.getValueAt(row, 2);
+		String beschreibung = (String) this.model.getValueAt(row, 3);
+		Date von = (Date) this.model.getValueAt(row, 4);
+		Date bis = (Date) this.model.getValueAt(row, 5);
+
+		Boolean isDone = (Boolean) this.model.getValueAt(row, 6);
+
+		Task t = new Task(kategorie, fach, beschreibung, von, bis, isDone);
 		t.setId(id);
-		
+
 		return t;
-		
+
 	}
-	
+
 	public void setChangedValue(Task task) {
-		int row=this.table.getSelectedRow();
+		int row = this.table.getSelectedRow();
 		this.model.setValueAt(task.getKategorie(), row, 1);
 		this.model.setValueAt(task.getFach(), row, 2);
 		this.model.setValueAt(task.getBeschreibung(), row, 3);
 		this.model.setValueAt(task.getVon(), row, 4);
 		this.model.setValueAt(task.getBis(), row, 5);
 	}
-	
-	public void addListInTable(ArrayList<Task> liste)
-	{
-		for(Task t : liste)
-		{
-			this.taskArray = new Object[] {t.getId(), t.getKategorie().toString(), t.getFach(), t.getBeschreibung(), t.getVon(),
-					t.getBis(), t.getIsDone() };
+
+	public void addListInTable(ArrayList<Task> liste) {
+		for (Task t : liste) {
+			this.taskArray = new Object[] { t.getId(), t.getKategorie().toString(), t.getFach(), t.getBeschreibung(),
+					t.getVon(), t.getBis(), t.getIsDone() };
 			this.model.addRow(this.taskArray);
 		}
 	}
@@ -187,18 +190,17 @@ public class ListPanel extends JPanel implements TableModelListener{
 	public void deleteTable() {
 		int rowCount = this.model.getRowCount();
 		for (int i = rowCount - 1; i >= 0; i--) {
-		    this.model.removeRow(i);
+			this.model.removeRow(i);
 		}
 	}
 
 	@Override
 	public void tableChanged(TableModelEvent e) {
 
-		if(e.getColumn()==6)
-		{
-			int row=e.getFirstRow();
-			DatabaseHelper.updateData((Integer) this.model.getValueAt(row, 0),(Boolean) this.model.getValueAt(row, 6));
+		if (e.getColumn() == 6) {
+			int row = e.getFirstRow();
+			DatabaseHelper.updateData((Integer) this.model.getValueAt(row, 0), (Boolean) this.model.getValueAt(row, 6));
 		}
-		
+
 	}
 }
