@@ -109,7 +109,7 @@ public class Mainframe extends JFrame implements ActionListener {
 					e1.printStackTrace();
 				}
 			} else {
-				infoBox("Keine Verbindung zur Datenbank!", "Internetverbindung");
+				infoBox("Keine Verbindung zum INTERRRNET!", "Internetverbindung");
 			}
 
 		} else if (e.getActionCommand().equals("refresh")) {
@@ -133,7 +133,7 @@ public class Mainframe extends JFrame implements ActionListener {
 				this.txtvon.setText("");
 				this.txtbis.setText("");
 			} else {
-				infoBox("Keine Verbindung zur Datenbank!", "Internetverbindung");
+				infoBox("Keine Verbindung zum INTERRRNET!", "Internetverbindung");
 			}
 		} else if (e.getActionCommand().equals("ContexteMenuLoeschen")) {
 			if (netIsAvailable()) {
@@ -146,7 +146,7 @@ public class Mainframe extends JFrame implements ActionListener {
 				this.taskdialog.setTask(this.tasktable.getSelectedTask());
 				this.taskdialog.enableAendernButton(true);
 			} else {
-				infoBox("Keine Verbindung zur Datenbank!", "Internetverbindung");
+				infoBox("Keine Verbindung zum INTERRRNET!", "Internetverbindung");
 			}
 
 		} else if (e.getActionCommand().equals("btnAendern")) {
