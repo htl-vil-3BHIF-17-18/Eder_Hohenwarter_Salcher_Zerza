@@ -85,7 +85,7 @@ public class DatabaseHelper {
 	public static void saveData(Task task, ListPanel listpanel) throws ParseException {
 		Connection con = null;
 		Statement stmt_Insert = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.mm.yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 		String s = "";
 
 		try {
@@ -171,7 +171,7 @@ public class DatabaseHelper {
 	public static void updateChangedData(Task task, int id) {
 		Connection con = null;
 		Statement stmt_Update = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.mm.yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");

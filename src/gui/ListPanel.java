@@ -45,7 +45,7 @@ public class ListPanel extends JPanel implements TableModelListener {
 	private boolean insert = true;
 	private MyPopupMenu popup = null;
 	private ActionListener al = null;
-	private DateFormat dateFormat = new SimpleDateFormat("dd.mm.yyyy");
+	private DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 	Date today = new Date();
 
 	public ListPanel(ActionListener al) {

@@ -37,7 +37,7 @@ public class Taskdialog extends JPanel{
 	
 	
 	private ActionListener al=null;
-	private DateFormat dateFormat = new SimpleDateFormat("dd.mm.yyyy");
+	private DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 	
 	private JFrame parent = null;
 	private Task task = null;

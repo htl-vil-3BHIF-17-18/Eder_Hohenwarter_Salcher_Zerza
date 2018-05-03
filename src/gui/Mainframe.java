@@ -42,7 +42,7 @@ public class Mainframe extends JFrame implements ActionListener {
 	private JButton btnRefresh = null;
 	private Taskdialog taskdialog = null;
 	private ListPanel tasktable = null;
-	private DateFormat dateFormat = new SimpleDateFormat("dd.mm.yyyy");
+	private DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
 	public Mainframe(String title) {
 		super(title);
