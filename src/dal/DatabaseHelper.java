@@ -246,6 +246,7 @@ public class DatabaseHelper {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		} finally {
+			
 			try {
 				rs.close();
 				stmt_Select.close();
