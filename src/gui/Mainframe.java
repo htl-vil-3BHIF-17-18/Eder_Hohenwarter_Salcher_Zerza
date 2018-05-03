@@ -11,7 +11,6 @@ import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -22,10 +21,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import bll.Kategorie;
-import bll.Task;
 import dal.DatabaseHelper;
-import sun.invoke.empty.Empty;
 
 public class Mainframe extends JFrame implements ActionListener {
 
@@ -37,24 +33,27 @@ public class Mainframe extends JFrame implements ActionListener {
 	private JLabel lblvon = null;
 	private JLabel lblbis = null;
 	private JLabel lblFilter = null;
+	
 	private JFormattedTextField txtvon = null;
 	private JFormattedTextField txtbis = null;
+	
 	private JComboBox kategorieauswahl = null;
-	private String[] cbKategorienListe = { "Alles", "GLF", "Mitarbeitskontrolle", "Hausübung", "PLF", "Schularbeit",
-			"Schulübung" };
-
 	private JMenuBar menubar = null;
 	private JButton btnRefresh = null;
 	private Taskdialog taskdialog = null;
 	private ListPanel tasktable = null;
+	
 	private DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+	private String[] cbKategorienListe = { "Alles", "GLF", "Mitarbeitskontrolle", "Hausübung", "PLF", "Schularbeit",
+	"Schulübung" };
 
 	public Mainframe(String title) {
 		super(title);
 		this.setMinimumSize(new Dimension(800, 400));
 		this.setPreferredSize(new Dimension(800, 400));
-		initializeControls();
 
+		initializeControls();
+		this.setLocationRelativeTo(null);
 		this.pack();
 		this.setVisible(true);
 	}
@@ -98,22 +97,21 @@ public class Mainframe extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("btnAdd")) {
-			if (netIsAvailable()) {
+			if (Infobox.netIsAvailable()) {
 				try {
 					if (this.taskdialog.getEingabeTask() != null) {
 						DatabaseHelper.saveData(this.taskdialog.getEingabeTask(), this.tasktable);
 						this.tasktable.addTask((this.taskdialog.getEingabeTask()));
 					}
 				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			} else {
-				infoBox("Keine Verbindung zum INTERRRNET!", "Internetverbindung");
+				Infobox.infoBox("Keine Verbindung zum INTERRRNET!", "Internetverbindung");
 			}
 
 		} else if (e.getActionCommand().equals("refresh")) {
-			if (netIsAvailable()) {
+			if (Infobox.netIsAvailable()) {
 				this.tasktable.deleteTable();
 
 				if (!this.txtvon.getText().isEmpty() && !this.txtbis.getText().isEmpty()) {
@@ -122,7 +120,6 @@ public class Mainframe extends JFrame implements ActionListener {
 								this.kategorieauswahl.getSelectedItem().toString(),
 								dateFormat.parse(this.txtvon.getText()), dateFormat.parse(this.txtbis.getText())));
 					} catch (ParseException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				} else {
@@ -133,24 +130,24 @@ public class Mainframe extends JFrame implements ActionListener {
 				this.txtvon.setText("");
 				this.txtbis.setText("");
 			} else {
-				infoBox("Keine Verbindung zum INTERRRNET!", "Internetverbindung");
+				Infobox.infoBox("Keine Verbindung zum INTERRRNET!", "Internetverbindung");
 			}
 		} else if (e.getActionCommand().equals("ContexteMenuLoeschen")) {
-			if (netIsAvailable()) {
+			if (Infobox.netIsAvailable()) {
 				DatabaseHelper.deleteData(this.tasktable.getSelectedTaskIDandDeleteRow());
 			} else {
-				infoBox("Keine Verbindung zur Datenbank!", "Internetverbindung");
+				Infobox.infoBox("Keine Verbindung zur Datenbank!", "Internetverbindung");
 			}
 		} else if (e.getActionCommand().equals("ContexteMenuAendern")) {
-			if (netIsAvailable()) {
+			if (Infobox.netIsAvailable()) {
 				this.taskdialog.setTask(this.tasktable.getSelectedTask());
 				this.taskdialog.enableAendernButton(true);
 			} else {
-				infoBox("Keine Verbindung zum INTERRRNET!", "Internetverbindung");
+				Infobox.infoBox("Keine Verbindung zum INTERRRNET!", "Internetverbindung");
 			}
 
 		} else if (e.getActionCommand().equals("btnAendern")) {
-			if (netIsAvailable()) {
+			if (Infobox.netIsAvailable()) {
 				try {
 					if (this.taskdialog.getEingabeTask() != null) {
 						DatabaseHelper.updateChangedData(this.taskdialog.getEingabeTask(),
@@ -165,27 +162,9 @@ public class Mainframe extends JFrame implements ActionListener {
 					e1.printStackTrace();
 				}
 			} else {
-				infoBox("Keine Verbindung zum INTERRRNET!", "Internetverbindung");
+				Infobox.infoBox("Keine Verbindung zum INTERRRNET!", "Internetverbindung");
 			}
 
-		}
-	}
-
-	public void infoBox(String infoMessage, String titleBar) {
-		JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.INFORMATION_MESSAGE);
-	}
-
-	private boolean netIsAvailable() {
-		try {
-			final URL url = new URL("http://www.google.com");
-			final URLConnection conn = url.openConnection();
-			conn.connect();
-			conn.getInputStream().close();
-			return true;
-		} catch (MalformedURLException e) {
-			throw new RuntimeException(e);
-		} catch (IOException e) {
-			return false;
 		}
 	}
 

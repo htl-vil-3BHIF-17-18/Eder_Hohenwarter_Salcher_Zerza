@@ -45,7 +45,6 @@ public class ListPanel extends JPanel implements TableModelListener {
 	private boolean insert = true;
 	private MyPopupMenu popup = null;
 	private ActionListener al = null;
-	private DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 	Date today = new Date();
 
 	public ListPanel(ActionListener al) {
@@ -87,6 +86,7 @@ public class ListPanel extends JPanel implements TableModelListener {
 
 		
 		this.table = new JTable(model) {
+
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
@@ -108,7 +108,7 @@ public class ListPanel extends JPanel implements TableModelListener {
 
 					}
 				} else {
-					c.setBackground(table.getBackground());
+					//c.setBackground(table.getBackground());
 				}
 				return c;
 			}
@@ -116,7 +116,7 @@ public class ListPanel extends JPanel implements TableModelListener {
 		table.getTableHeader().setReorderingAllowed(false);
 		table.getColumnModel().removeColumn(table.getColumnModel().getColumn(0));
 		table.getModel().addTableModelListener(this);
-				
+		table.setAutoCreateRowSorter(true);
 		popup = new MyPopupMenu(this.al);
 		this.table.addMouseListener(new PopupListener(this.popup));
 
