@@ -113,7 +113,7 @@ public class ListPanel extends JPanel implements TableModelListener {
 				return c;
 			}
 		};
-		
+		table.getTableHeader().setReorderingAllowed(false);
 		table.getColumnModel().removeColumn(table.getColumnModel().getColumn(0));
 		table.getModel().addTableModelListener(this);
 				
