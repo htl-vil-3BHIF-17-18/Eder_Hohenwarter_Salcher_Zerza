@@ -2,14 +2,13 @@ package dal;
 
 import java.sql.*;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
 import bll.Kategorie;
 import bll.Task;
 import gui.ListPanel;
 
 public class DatabaseHelper {
+	@SuppressWarnings("deprecation")
 	public static ArrayList<Task> loadData(String sortKategorie, java.util.Date von, java.util.Date bis) {
 		Connection con = null;
 		Statement stmt_Select = null;
@@ -84,19 +83,31 @@ public class DatabaseHelper {
 
 	public static void saveData(Task task, ListPanel listpanel) throws ParseException {
 		Connection con = null;
-		Statement stmt_Insert = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+		PreparedStatement stmt_Insert = null;
+		String isDone="";
 		String s = "";
 
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			con = DriverManager.getConnection("jdbc:oracle:thin:d3b04/d3b@212.152.179.117:1521:ora11g");
-			stmt_Insert = con.createStatement();
+			stmt_Insert = con.prepareStatement("INSERT INTO Tasks VALUES(seqTasks.NEXTVAL,?,?,?,?,?,?)");
+			stmt_Insert.setString(1, task.getKategorie().toString());
+			stmt_Insert.setString(2, task.getFach());
+			stmt_Insert.setString(3, task.getBeschreibung());
+			stmt_Insert.setDate(4, new java.sql.Date(task.getVon().getTime()));
+			stmt_Insert.setDate(5, new java.sql.Date(task.getBis().getTime()));
+			
+			if(task.getIsDone()==true) {
+				isDone="true";
+			}
+			
+			else if(task.getIsDone()==false) {
+				isDone="false";
+			}
+			
+			stmt_Insert.setString(6, isDone);
+			stmt_Insert.executeQuery();
 
-			stmt_Insert.executeQuery("INSERT INTO Tasks Values(seqTasks.NEXTVAL, '" + task.getKategorie().toString()
-					+ "', '" + task.getFach() + "', '" + task.getBeschreibung() + "', TO_DATE('"
-					+ sdf.format(task.getVon()).toString() + "'), TO_DATE('" + sdf.format(task.getBis()).toString()
-					+ "'), '" + task.getIsDone() + "')");
 		} catch (ClassNotFoundException e) {
 			listpanel.setInsert(false);
 			e.printStackTrace();
@@ -122,7 +133,6 @@ public class DatabaseHelper {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			con = DriverManager.getConnection("jdbc:oracle:thin:d3b04/d3b@212.152.179.117:1521:ora11g");
 			stmt_Delete = con.createStatement();
-
 			stmt_Delete.executeQuery("DELETE FROM Tasks WHERE id=" + id);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -140,20 +150,25 @@ public class DatabaseHelper {
 
 	public static void updateData(int id, boolean isDone) {
 		Connection con = null;
-		Statement stmt_Update = null;
+		PreparedStatement stmt_Update = null;
+		String doneOrNot="";
 
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			con = DriverManager.getConnection("jdbc:oracle:thin:d3b04/d3b@212.152.179.117:1521:ora11g");
-			stmt_Update = con.createStatement();
+			stmt_Update = con.prepareStatement("UPDATE Tasks SET IsDone=? WHERE id=?");
 
 			if (isDone == true) {
-				stmt_Update.executeQuery("UPDATE Tasks SET IsDone='true' WHERE id=" + id + "");
+				doneOrNot="true";
 			}
 
 			else if (isDone == false) {
-				stmt_Update.executeQuery("UPDATE Tasks SET isDone='false' WHERE id=" + id + "");
+				doneOrNot="false";
 			}
+			
+			stmt_Update.setString(1, doneOrNot);
+			stmt_Update.setInt(2, id);
+			stmt_Update.executeQuery();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e1) {
@@ -170,15 +185,21 @@ public class DatabaseHelper {
 	
 	public static void updateChangedData(Task task, int id) {
 		Connection con = null;
-		Statement stmt_Update = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+		PreparedStatement stmt_Update = null;
 
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			con = DriverManager.getConnection("jdbc:oracle:thin:d3b04/d3b@212.152.179.117:1521:ora11g");
-			stmt_Update = con.createStatement();
 			 
-			stmt_Update.executeQuery("UPDATE Tasks SET kategorie='" + task.getKategorie().toString() + "', fach='" + task.getFach() + "', beschreibung='" + task.getBeschreibung() + "', von='" + sdf.format(task.getVon()).toString() + "', bis='" + sdf.format(task.getBis()).toString() + "' WHERE id=" + id  + "");
+			stmt_Update=con.prepareStatement("UPDATE Tasks SET kategorie=?, fach=?, beschreibung=?, von=?, bis=? WHERE id=?");
+			stmt_Update.setString(1, task.getKategorie().toString());
+			stmt_Update.setString(2, task.getFach());
+			stmt_Update.setString(3, task.getBeschreibung());
+			stmt_Update.setDate(4, new java.sql.Date(task.getVon().getTime()));
+			stmt_Update.setDate(5, new java.sql.Date(task.getBis().getTime()));
+			stmt_Update.setInt(6, id);
+			stmt_Update.execute();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e1) {

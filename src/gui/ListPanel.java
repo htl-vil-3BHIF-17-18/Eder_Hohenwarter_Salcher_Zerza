@@ -148,6 +148,10 @@ public class ListPanel extends JPanel implements TableModelListener {
 		this.model.removeRow(id);
 		return rgw;
 	}
+	
+	public int getSelectedRow() {
+		return this.table.getSelectedRow();
+	}
 
 	public Task getSelectedTask() {
 		int row = table.getSelectedRow();
@@ -170,8 +174,7 @@ public class ListPanel extends JPanel implements TableModelListener {
 
 	}
 
-	public void setChangedValue(Task task) {
-		int row = this.table.getSelectedRow();
+	public void setChangedValue(Task task, int row) {
 		this.model.setValueAt(task.getKategorie(), row, 1);
 		this.model.setValueAt(task.getFach(), row, 2);
 		this.model.setValueAt(task.getBeschreibung(), row, 3);

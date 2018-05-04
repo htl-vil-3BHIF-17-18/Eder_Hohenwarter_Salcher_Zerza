@@ -21,6 +21,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import bll.Task;
 import dal.DatabaseHelper;
 
 public class Mainframe extends JFrame implements ActionListener {
@@ -42,6 +43,8 @@ public class Mainframe extends JFrame implements ActionListener {
 	private JButton btnRefresh = null;
 	private Taskdialog taskdialog = null;
 	private ListPanel tasktable = null;
+	private int selectedRow=0;
+	private int selectedRowId=0;
 	
 	private DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 	private String[] cbKategorienListe = { "Alles", "GLF", "Mitarbeitskontrolle", "Hausübung", "PLF", "Schularbeit",
@@ -140,7 +143,10 @@ public class Mainframe extends JFrame implements ActionListener {
 			}
 		} else if (e.getActionCommand().equals("ContexteMenuAendern")) {
 			if (Infobox.netIsAvailable()) {
-				this.taskdialog.setTask(this.tasktable.getSelectedTask());
+				Task task=this.tasktable.getSelectedTask();
+				this.taskdialog.setTask(task);
+				this.selectedRowId=task.getId();
+				this.selectedRow=this.tasktable.getSelectedRow();
 				this.taskdialog.enableAendernButton(true);
 			} else {
 				Infobox.infoBox("Keine Verbindung zum INTERRRNET!", "Internetverbindung");
@@ -150,9 +156,8 @@ public class Mainframe extends JFrame implements ActionListener {
 			if (Infobox.netIsAvailable()) {
 				try {
 					if (this.taskdialog.getEingabeTask() != null) {
-						DatabaseHelper.updateChangedData(this.taskdialog.getEingabeTask(),
-								this.tasktable.getSelectedTask().getId());
-						this.tasktable.setChangedValue(this.taskdialog.getEingabeTask());
+						DatabaseHelper.updateChangedData(this.taskdialog.getEingabeTask(), this.selectedRowId);
+						this.tasktable.setChangedValue(this.taskdialog.getEingabeTask(), this.selectedRow);
 						this.tasktable.repaint();
 						this.taskdialog.enableAendernButton(false);
 						this.taskdialog.makeClear();
