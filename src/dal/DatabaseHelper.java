@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import bll.Kategorie;
 import bll.Task;
+import gui.Infobox;
 import gui.ListPanel;
 
 public class DatabaseHelper {
@@ -266,6 +267,7 @@ public class DatabaseHelper {
 			e.printStackTrace();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			Infobox.infoBox("Verbindung zur Datenbank nicht möglich!", "Datenbankverbindung");
 		} finally {
 			
 			try {
@@ -273,6 +275,7 @@ public class DatabaseHelper {
 				stmt_Select.close();
 				con.close();
 			} catch (SQLException e) {
+				Infobox.infoBox("Verbindung zur Datenbank nicht möglich!", "Datenbankverbindung");
 				e.printStackTrace();
 			}
 		}

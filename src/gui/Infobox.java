@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 public abstract class Infobox {
 
 	public static void infoBox(String infoMessage, String titleBar) {
-		JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.ERROR_MESSAGE);
 	}
 	
 	public static boolean netIsAvailable() {
